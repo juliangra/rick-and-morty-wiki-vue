@@ -1,0 +1,143 @@
+type User {
+  id: ID!
+  email: String!
+  username: String!
+  createdAt: String!
+  """
+  A list of ratings that this user has made.
+  """
+  ratings: [Rating!]
+}
+
+"""
+Describes metadata regarding a page of results.
+"""
+type PageInfo {
+  count: Int!
+  pages: Int!
+}
+
+"""
+A wrapper to be used in paginated queries when fetching users.
+"""
+type Users {
+  results: [User!]!
+  info: PageInfo!
+}
+
+"""
+A mapped character from the external Rick and Morty API,
+including only the fields the application needs to use.
+"""
+type Character {
+  id: ID!
+  name: String!
+  status: String!
+  species: String!
+  type: String!
+  gender: String!
+  location: String!
+  image: String!
+}
+
+"""
+A rating of a character by a user.
+It does not have its own ID, but rather a compund ID of userId and characterId, because it is a link table.
+"""
+type Rating {
+  userId: ID!
+  characterId: ID!
+  value: Int!
+}
+
+"""
+A wrapper for data to be used when displaying the rating stats of a character.
+"""
+type RatingStats {
+  average: Float!
+  count: Int!
+}
+
+type AuthenticationResponse {
+  """
+  A token that can be used to authenticate the user in future requests.
+  It is undefined if the user is not authenticated.
+  """
+  token: String
+  """
+  An error message describing what part of the authentication failed.
+  It is undefined if the user is successfully authenticated.
+  """
+  error: String
+}
+
+input FilterCharacterInput {
+  name: String
+  status: String
+  species: String
+  type: String
+  gender: String
+}
+
+"""
+A wrapper to be used in paginated queries when fetching characters.
+"""
+type Characters {
+  results: [Character!]!
+  info: PageInfo!
+}
+
+"""
+A rating can be a value between 1 and 5.
+"""
+enum RatingValue {
+  ONE
+  TWO
+  THREE
+  FOUR
+  FIVE
+}
+
+enum Order {
+  asc
+  desc
+}
+
+# Queries and mutations
+type Query {
+  users(page: Int, orderBy: Order): Users!
+
+  user(username: String!): User
+
+  characters(page: Int, filter: FilterCharacterInput): Characters!
+
+  character(id: ID!): Character
+
+  """
+  Fetch a given rating by the compund ID of userId and characterId.
+  """
+  rating(characterId: ID!, userId: ID!): Rating
+
+  """
+  Fetch all rating stats for a given character.
+  """
+  ratingStatsByCharacterId(characterId: ID!): RatingStats!
+
+  """
+  Check if a user has rated a given character.
+  """
+  hasRatedCharacter(characterId: ID!, userId: ID!): Boolean!
+}
+
+type Mutation {
+  createUser(email: String!, username: String!, password: String!): AuthenticationResponse!
+
+  authenticateUser(identifier: String!, password: String!): AuthenticationResponse!
+
+  """
+  Create a rating for a given character by a given user.
+  """
+  rateCharacter(characterId: ID!, userId: ID!, value: RatingValue!): Rating!
+
+  deleteRating(characterId: ID!, userId: ID!): Rating!
+}
