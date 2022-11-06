@@ -4,16 +4,22 @@
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
+    "build:prod": "NODE_ENV=\"production\" build",
     "preview": "vite preview",
     "test:unit": "vitest --environment jsdom --root src/",
-    "test:e2e": "start-server-and-test preview :4173 'cypress run --e2e'",
-    "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' :4173 'cypress open --e2e'",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
     "format": "prettier --write './**/*.{vue,js,jsx,cjs,mjs,ts,tsx,cts,mts}' --config ./.prettierrc.json",
     "gen:types": "graphql-codegen --config codegen.yml && npm run format",
     "gen:types:watch": "graphql-codegen --config codegen.yml --watch",
-    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "test:e2e:setup": "npm run test:db:migrate && npm run test:db:seed && npm run test:backend",
+    "test:e2e": "npm run test:e2e:setup & cypress open",
+    "test:db:migrate": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project4_test\" npm run db:migrate:deploy",
+    "test:db:seed": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project4_test\" npm run db:seed",
+    "test:backend": "cd ../backend && npm run build && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project4_test\" PORT=8080 node . &",
+    "test:db:reset": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project4_test\" npm run db:reset",
+    "test:e2e:ci": "npm run test:e2e:setup && npx cypress install && cypress run && npm run test:db:reset"
   },
   "dependencies": {
     "@apollo/client": "^3.7.1",
