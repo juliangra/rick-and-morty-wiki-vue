@@ -1,3 +1,3 @@
-import { z } from 'zod'
+import * as y from 'yup'
 
-export const RatingSchema = z.number().min(1).max(5).step(1)
+export const RatingSchema = y.number().min(1).max(5)

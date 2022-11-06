@@ -1,5 +1,33 @@
-<template lang="">
-  <div>Login</div>
-</template>
+<script lang="ts" setup>
+import { useField, useForm } from 'vee-validate'
+import { LoginFormSchema } from '@/schemas/forms'
+import { watch } from 'vue'
+import type { LoginFormType } from '@/types/forms'
 
-<script lang="ts" setup></script>
+const { handleSubmit, errors } = useForm<LoginFormType>({
+  validationSchema: LoginFormSchema
+})
+
+const onSubmit = handleSubmit((values) => {
+  alert(JSON.stringify(values, null, 2))
+})
+
+const { value: identifier, errorMessage: identifierError } = useField('identifier')
+const { value: password, errorMessage: passwordError } = useField('password')
+
+watch(errors, (value) => {
+  console.log(value)
+})
+</script>
+
+<template>
+  <div>Login</div>
+
+  <form @submit="onSubmit">
+    <input name="identifier" v-model="identifier" type="text" />
+    <span>{{ identifierError }}</span>
+    <input name="password" v-model="password" type="password" />
+    <span>{{ passwordError }}</span>
+    <button>Submit</button>
+  </form>
+</template>
