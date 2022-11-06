@@ -1,8 +1,9 @@
+import getAPIEndpoint from '@/utils/api'
 import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client/core'
 
 const client = new ApolloClient({
   link: createHttpLink({
-    uri: 'http://localhost:8080/graphql'
+    uri: getAPIEndpoint()
   }),
   cache: new InMemoryCache()
 })
