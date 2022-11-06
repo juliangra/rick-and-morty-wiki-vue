@@ -1,0 +1,7 @@
+schema: http://localhost:8080/graphql
+documents: './src/graphql/**/*.ts'
+generates:
+  ./src/graphql/generated/:
+    preset: 'client'
+    config:
+      useTypeImports: true

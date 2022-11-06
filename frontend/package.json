@@ -10,16 +10,26 @@
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' :4173 'cypress open --e2e'",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
+    "format": "prettier --write './**/*.{vue,js,jsx,cjs,mjs,ts,tsx,cts,mts}' --config ./.prettierrc.json",
+    "gen:types": "graphql-codegen --config codegen.yml && npm run format",
+    "gen:types:watch": "graphql-codegen --config codegen.yml --watch",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.1",
+    "@vue/apollo-composable": "^4.0.0-beta.1",
     "@vueuse/core": "^9.4.0",
     "element-plus": "^2.2.20",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
     "pinia": "^2.0.23",
     "vue": "^3.2.41",
     "vue-router": "^4.1.5"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^2.13.11",
+    "@graphql-codegen/client-preset": "^1.1.3",
+    "@graphql-codegen/typescript-vue-apollo": "^3.3.6",
     "@rushstack/eslint-patch": "^1.1.4",
     "@types/jsdom": "^20.0.0",
     "@types/node": "^16.11.68",

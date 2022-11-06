@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import { useDark, useToggle } from '@vueuse/core'
+import { watch } from 'vue'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 
-console.log(isDark.value)
+watch(isDark, (value) => {
+  console.log(value)
+})
 </script>
 
 <template>
