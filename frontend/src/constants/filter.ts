@@ -1,4 +1,4 @@
-import { SelectOption } from 'src/types/forms'
+import type { SelectOption } from 'src/types/forms'
 
 /**
  * These constants are not retrievable from the GraphQL API
