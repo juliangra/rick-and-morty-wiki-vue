@@ -57,7 +57,7 @@ frontend:e2e:
     - cd frontend
     - npm ci
     # Start frontend server in background
-    - npm start > /dev/null & npx wait-on http://localhost:4173
+    - npm run start:ci
     - cd ../backend
     - npm ci
     - cd ../frontend

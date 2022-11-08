@@ -6,6 +6,7 @@
     "build": "run-p type-check build-only",
     "build:prod": "NODE_ENV=\"production\" build",
     "start": "vite preview",
+    "start:ci": "npx start-server-and-test start http://localhost:4173 test:e2e:ci",
     "test:unit": "vitest --environment jsdom --root src/",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false",
