@@ -1,0 +1,63 @@
+image: node:16.17.1
+
+# Set environment variables for folders in "cache" job settings for npm modules and Cypress binary
+variables:
+  CYPRESS_CACHE_FOLDER: "$CI_PROJECT_DIR/cache/Cypress"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - frontend/build/
+    - backend/dist/
+    - frontend/node_modules
+    - backend/node_modules
+    - cache/*
+    - cache/Cypress
+
+stages:
+  - frontend-build
+  - backend-build
+  - frontend-test
+  # - frontend-e2e
+
+frontend:build:
+  stage: frontend-build
+  script:
+    - cd frontend
+    - npm ci
+    - npm run lint
+    - npm run format
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/build
+
+backend:build:
+  stage: backend-build
+  script:
+    - cd backend
+    - npm ci
+    - npm run lint
+    - npm run build
+  artifacts:
+    paths:
+      - backend/dist
+
+frontend:test:
+  stage: frontend-test
+  script:
+    - cd frontend
+    - npm ci
+    - npm run test:unit
+# frontend:e2e:
+#   stage: frontend-e2e
+#   image: cypress/base:16.17.1
+#   script:
+#     - cd frontend
+#     - npm ci
+#     # Start frontend server in background
+#     - npm run start:ci
+#     - cd ../backend
+#     - npm ci
+#     - cd ../frontend
+#     - npm run test:e2e:ci
