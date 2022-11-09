@@ -3,26 +3,36 @@ import * as y from 'yup'
 export const LoginFormSchema = y.object({
   identifier: y
     .string()
-    .min(2, { message: 'Please enter your username or email address.' })
-    .required({ message: 'Please enter your username or email address.' }),
-  password: y.string().required({ message: 'Please enter your password.' })
+    .min(2, 'Please enter your username or email address.')
+    .required('Please enter your username or email address.'),
+  password: y.string().required('Please enter your password.')
 })
 
+type SubmitFunctionType = y.ObjectSchema<Record<string, any>>
+
+// Helper function that extends the input schema type and returns
+// appropriate types based on the schema
+export const getSubmitFn = <Schema extends SubmitFunctionType>(
+  _: Schema,
+  callback: (values: y.InferType<Schema>) => void
+) => {
+  return (key: Record<string, any>) => {
+    return callback(key)
+  }
+}
+
 export const RegisterFormSchema = y.object({
-  email: y
-    .string()
-    .email({ message: 'Invalid e-mail.' })
-    .required({ message: 'Please enter your e-mail.' }),
+  email: y.string().email('Invalid e-mail.').required('Please enter your e-mail.'),
   username: y
     .string()
-    .min(2, { message: 'Username must be at least 2 characters.' })
-    .required({ message: 'Please enter your username.' }),
-  password: y.string().min(6, { message: 'Password must be at least 6 characters.' }).required(),
+    .min(2, 'Username must be at least 2 characters.')
+    .required('Please enter your username.'),
+  password: y.string().min(6, 'Password must be at least 6 characters.').required(),
   repeatPassword: y
     .string()
-    .min(6, { message: 'Password must be at least 6 characters.' })
-    .oneOf([y.ref('password'), null], { message: 'Passwords must match.' })
-    .required({ message: 'Please repeat your password.' })
+    .min(6, 'Password must be at least 6 characters.')
+    .oneOf([y.ref('password'), null], 'Passwords must match.')
+    .required('Please repeat your password.')
 })
 
 export const FilterFormSchema = y.object({
