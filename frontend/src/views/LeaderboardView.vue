@@ -60,7 +60,7 @@ watch([orderBy, page], () => {
 <template>
   <h1>Leaderboard</h1>
 
-  <LoadingOverlay :loading="true" />
+  <LoadingOverlay v-if="loading" />
 
   <el-select v-model="orderBy" class="m-2" placeholder="Sort users" size="large">
     <el-option

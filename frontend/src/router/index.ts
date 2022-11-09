@@ -1,3 +1,4 @@
+import useAuthentication from '@/hooks/auth/useAuthentication';
 import useIsAuthenticated from '@/hooks/auth/useIsAuthenticated';
 import { createRouter, createWebHashHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
@@ -56,6 +57,15 @@ router.beforeEach(async (to, _from, next) => {
   const authenticated = useIsAuthenticated()
 
   if (authenticated && denyIfAuthenticated) return next('/')
+
+  return next()
+})
+
+router.beforeEach(async (to, _from, next) => {
+  const denyIfAuthenticated = to.matched.some((record) => record.meta.denyIfAuthenticated)
+  const { isAuthenticated } = useAuthentication()
+
+  if (isAuthenticated && denyIfAuthenticated) return next('/')
 
   return next()
 })
