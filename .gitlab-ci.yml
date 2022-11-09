@@ -18,7 +18,7 @@ stages:
   - frontend-build
   - backend-build
   - frontend-test
-  - frontend-e2e
+  # - frontend-e2e
 
 frontend:build:
   stage: frontend-build
@@ -49,16 +49,15 @@ frontend:test:
     - cd frontend
     - npm ci
     - npm run test:unit
-
-frontend:e2e:
-  stage: frontend-e2e
-  image: cypress/base:16.17.1
-  script:
-    - cd frontend
-    - npm ci
-    # Start frontend server in background
-    - npm run start:ci
-    - cd ../backend
-    - npm ci
-    - cd ../frontend
-    - npm run test:e2e:ci
+# frontend:e2e:
+#   stage: frontend-e2e
+#   image: cypress/base:16.17.1
+#   script:
+#     - cd frontend
+#     - npm ci
+#     # Start frontend server in background
+#     - npm run start:ci
+#     - cd ../backend
+#     - npm ci
+#     - cd ../frontend
+#     - npm run test:e2e:ci
