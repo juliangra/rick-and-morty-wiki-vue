@@ -1,6 +1,6 @@
-import HomeView from '../views/HomeView.vue'
-import { createRouter, createWebHashHistory } from 'vue-router'
-import useIsAuthenticated from '@/hooks/auth/useIsAuthenticated'
+import useIsAuthenticated from '@/hooks/auth/useIsAuthenticated';
+import { createRouter, createWebHashHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
 
 const routes = [
   {
@@ -44,12 +44,12 @@ const routes = [
     name: 'not-found',
     component: () => import('../views/NotFoundView.vue')
   }
-]
+];
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes
-})
+});
 
 router.beforeEach(async (to, _from, next) => {
   const denyIfAuthenticated = to.matched.some((record) => record.meta.denyIfAuthenticated)

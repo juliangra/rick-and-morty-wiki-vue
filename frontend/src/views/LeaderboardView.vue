@@ -1,24 +1,27 @@
 <script lang="ts" setup>
+import LoadingOverlay from '@/components/common/LoadingOverlay.vue'
 import { DefaultPageInfoFragment } from '@/graphql/fragments/PageInfo'
 import { DefaultUserFragment } from '@/graphql/fragments/User'
 import { useFragment } from '@/graphql/generated/fragment-masking'
+import { Order } from '@/graphql/generated/graphql'
 import { GetUsersQuery } from '@/graphql/queries/users/GetUsers'
 import { useOrderByStore } from '@/stores/orderBy'
 import { useQuery } from '@vue/apollo-composable'
+import moment from 'moment'
 import { storeToRefs } from 'pinia'
 import { computed, ref, watch } from 'vue'
-import LoadingOverlay from '@/components/common/LoadingOverlay.vue'
-import ErrorOverlay from '@/components/common/ErrorOverlay.vue'
-import PaginationBar from '@/components/PaginationBar.vue'
-import OrderBySelect from '@/components/forms/OrderBySelect.vue'
-import HeadingText from '@/components/typography/HeadingText.vue'
-import { getTimeSince } from '@/utils/views/LeaderboardView'
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+
+const sortOptions = Object.keys(Order).map((key) => ({
+  label: key,
+  value: Order[key as keyof typeof Order]
+}))
 
 const orderByStore = useOrderByStore()
 const { orderBy } = storeToRefs(orderByStore)
+const { toggleOrderBy } = orderByStore
 
 const page = ref(1)
+
 const handleOnPaginationChange = (value: number) => {
   page.value = value
 }
@@ -29,7 +32,13 @@ const { result, loading, error, refetch } = useQuery(GetUsersQuery, {
 })
 
 const pageInfo = computed(() => useFragment(DefaultPageInfoFragment, result.value?.users.info))
-const pages = computed(() => pageInfo.value?.pages ?? 1)
+const pages = computed(() => pageInfo.value?.pages)
+
+watch(pages, () => {
+  console.log(pages.value)
+})
+
+const getTimeSince = (time: string) => moment(parseInt(time)).fromNow()
 
 const users = computed(() => useFragment(DefaultUserFragment, result.value?.users.results))
 const tableData = computed(() =>
@@ -46,32 +55,35 @@ watch([orderBy, page], () => {
     page: page.value
   })
 })
-
-const { sm } = useBreakpoints(breakpointsTailwind)
 </script>
 
 <template>
-  <HeadingText title="Leaderboard" />
+  <h1>Leaderboard</h1>
 
-  <LoadingOverlay v-if="loading" />
-  <ErrorOverlay v-else-if="error" />
+  <LoadingOverlay :loading="true" />
 
-  <div v-else>
-    <div class="flex justify-start">
-      <OrderBySelect />
-    </div>
-
-    <el-table :data="tableData" class="w-11/12">
-      <el-table-column prop="username" label="Username" class="w-1/2 md:w-1/4" />
-      <el-table-column prop="email" label="E-mail" class="w-1/4" v-if="sm" />
-      <el-table-column prop="createdAt" label="Created" class="w-1/4" v-if="sm" />
-      <el-table-column prop="ratings" label="Ratings" class="w-1/2 md:w-1/4" />
-    </el-table>
-
-    <PaginationBar
-      :pageCount="pages"
-      :currentPage="page"
-      :onPageChange="handleOnPaginationChange"
+  <el-select v-model="orderBy" class="m-2" placeholder="Sort users" size="large">
+    <el-option
+      v-for="option in sortOptions"
+      :key="option.value"
+      :label="option.label"
+      :value="option.value"
+      @change="toggleOrderBy"
     />
-  </div>
+  </el-select>
+
+  <el-table :data="tableData" style="width: 100%">
+    <el-table-column prop="username" label="Username" width="180" />
+    <el-table-column prop="email" label="E-mail" width="180" />
+    <el-table-column prop="createdAt" label="Created at" width="180" />
+    <el-table-column prop="ratings" label="Ratings" />
+  </el-table>
+
+  <el-pagination
+    background
+    layout="prev, pager, next"
+    :page-count="pages"
+    :current-page="page"
+    @current-change="handleOnPaginationChange"
+  />
 </template>
