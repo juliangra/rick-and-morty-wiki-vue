@@ -1,23 +1,23 @@
 <script lang="ts" setup>
-import { LoginFormSchema } from '@/schemas/forms'
-import type { LoginFormType } from '@/types/forms'
-import { useField, useForm } from 'vee-validate'
-import { watch } from 'vue'
+import { LoginFormSchema } from '@/schemas/forms';
+import type { LoginFormType } from '@/types/forms';
+import { useField, useForm } from 'vee-validate';
+import { watch } from 'vue';
 
 const { handleSubmit, errors } = useForm<LoginFormType>({
   validationSchema: LoginFormSchema
-})
+});
 
 const onSubmit = handleSubmit((values) => {
-  alert(JSON.stringify(values, null, 2))
-})
+  alert(JSON.stringify(values, null, 2));
+});
 
-const { value: identifier, errorMessage: identifierError } = useField('identifier')
-const { value: password, errorMessage: passwordError } = useField('password')
+const { value: identifier, errorMessage: identifierError } = useField('identifier');
+const { value: password, errorMessage: passwordError } = useField('password');
 
 watch(errors, (value) => {
-  console.log(value)
-})
+  console.log(value);
+});
 </script>
 
 <template>

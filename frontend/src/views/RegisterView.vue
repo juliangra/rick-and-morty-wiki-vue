@@ -1,46 +1,47 @@
 <script lang="ts" setup>
 import { getSubmitFn, RegisterFormSchema } from '@/schemas/forms'
-import { Form, Field } from 'vee-validate'
-import { provideApolloClient, useMutation } from '@vue/apollo-composable'
-import { CreateUserMutation } from '@/graphql/mutations/users/CreateUser'
-import client from '@/lib/apollo'
-import { computed, ref } from 'vue'
-import { set, useStorage } from '@vueuse/core'
-import { useRouter } from 'vue-router'
-import LoadingOverlay from '@/components/common/LoadingOverlay.vue'
+import type { RegisterFormType } from '@/types/forms';
+import { Form, Field } from 'vee-validate';
+import { provideApolloClient, useMutation } from '@vue/apollo-composable';
+import { CreateUserMutation } from '@/graphql/mutations/users/CreateUser';
+import client from '@/lib/apollo';
+import { computed, ref } from 'vue';
+import { set, useStorage } from '@vueuse/core';
+import { useRouter } from 'vue-router';
+import LoadingOverlay from '@/components/common/LoadingOverlay.vue';
 
-provideApolloClient(client)
+provideApolloClient(client);
 
-const isLoading = ref(false)
-const formError = ref<string | null>(null)
-const isError = computed(() => !!formError.value)
-const router = useRouter()
+const isLoading = ref(false);
+const formError = ref<string | null>(null);
+const isError = computed(() => !!formError.value);
+const router = useRouter();
 
 const onSubmit = getSubmitFn(RegisterFormSchema, async (values) => {
-  set(isLoading, true)
-  const { username, password, email } = values
+  set(isLoading, true);
+  const { username, password, email } = values;
 
-  const { mutate: createUserMutation } = useMutation(CreateUserMutation)
+  const { mutate: createUserMutation } = useMutation(CreateUserMutation);
 
   const res = await createUserMutation({
     email,
     username,
     password
-  })
+  });
 
-  const { token, error: dbError } = res?.data?.createUser || {}
+  const { token, error: dbError } = res?.data?.createUser || {};
 
-  set(isLoading, false)
+  set(isLoading, false);
 
   if (dbError) {
-    set(formError, dbError)
-    return
+    set(formError, dbError);
+    return;
   }
 
-  set(formError, null)
-  useStorage('token', token)
-  await router.push('/')
-})
+  set(formError, null);
+  useStorage('token', token);
+  await router.push('/');
+});
 </script>
 <template>
   <div>Register</div>
