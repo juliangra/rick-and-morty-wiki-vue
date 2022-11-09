@@ -1,21 +1,20 @@
 <script lang="ts" setup>
-import { getSubmitFn, RegisterFormSchema } from '@/schemas/forms'
-import type { RegisterFormType } from '@/types/forms';
-import { Form, Field } from 'vee-validate';
-import { provideApolloClient, useMutation } from '@vue/apollo-composable';
-import { CreateUserMutation } from '@/graphql/mutations/users/CreateUser';
-import client from '@/lib/apollo';
-import { computed, ref } from 'vue';
-import { set, useStorage } from '@vueuse/core';
-import { useRouter } from 'vue-router';
 import LoadingOverlay from '@/components/common/LoadingOverlay.vue';
+import { CreateUserMutation } from '@/graphql/mutations/users/CreateUser';
+import useAuthentication from '@/hooks/auth/useAuthentication';
+import client from '@/lib/apollo';
+import { getSubmitFn, RegisterFormSchema } from '@/schemas/forms';
+import { provideApolloClient, useMutation } from '@vue/apollo-composable';
+import { set } from '@vueuse/core';
+import { Field, Form } from 'vee-validate';
+import { computed, ref } from 'vue';
 
 provideApolloClient(client);
 
 const isLoading = ref(false);
 const formError = ref<string | null>(null);
 const isError = computed(() => !!formError.value);
-const router = useRouter();
+const {signIn} = useAuthentication()
 
 const onSubmit = getSubmitFn(RegisterFormSchema, async (values) => {
   set(isLoading, true);
@@ -27,21 +26,20 @@ const onSubmit = getSubmitFn(RegisterFormSchema, async (values) => {
     email,
     username,
     password
-  });
+  })
 
-  const { token, error: dbError } = res?.data?.createUser || {};
+  const { token, error: dbError } = res?.data?.createUser || {}
 
-  set(isLoading, false);
+  set(isLoading, false)
 
-  if (dbError) {
-    set(formError, dbError);
-    return;
+  if (dbError || !token) {
+    set(formError, dbError)
+    return
   }
 
-  set(formError, null);
-  useStorage('token', token);
-  await router.push('/');
-});
+  set(formError, null)
+  await signIn(token)
+})
 </script>
 <template>
   <div>Register</div>

@@ -1,20 +1,29 @@
 <script setup lang="ts">
 import { useDark, useToggle } from '@vueuse/core';
-import { watch } from 'vue';
 import { RouterView } from 'vue-router';
+import useAuthentication from './hooks/auth/useAuthentication';
 
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
-watch(isDark, (value) => {
-  console.log(value);
-});
+const { isAuthenticated, signOut } = useAuthentication()
 </script>
 
 <template>
-  <html class="dark">
-    <el-button type="primary" @click="toggleDark()">toggle dark mode</el-button>
+  <el-button type="primary" @click="toggleDark()">toggle dark mode</el-button>
+  <div v-if="isAuthenticated">
+    <el-button type="default" @click="signOut()">Sign out</el-button>
+  </div>
+  <div v-else>
+    <router-link to="/login">
+      <el-button type="success">Sign in</el-button>
+    </router-link>
+    <router-link to="/register">
+      <el-button type="danger">Sign up</el-button>
+    </router-link>
+  </div>
 
+  <main class="w-11/12 m-auto">
     <RouterView />
-  </html>
+  </main>
 </template>
