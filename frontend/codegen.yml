@@ -5,3 +5,4 @@ generates:
     preset: 'client'
     config:
       useTypeImports: true
+      skipTypename: true

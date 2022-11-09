@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { useField, useForm } from 'vee-validate'
 import { LoginFormSchema } from '@/schemas/forms'
-import { watch } from 'vue'
 import type { LoginFormType } from '@/types/forms'
+import { useField, useForm } from 'vee-validate'
+import { watch } from 'vue'
 
 const { handleSubmit, errors } = useForm<LoginFormType>({
   validationSchema: LoginFormSchema

@@ -15,7 +15,6 @@ export type Scalars = {
 };
 
 export type AuthenticationResponse = {
-  __typename?: 'AuthenticationResponse';
   /**
    * An error message describing what part of the authentication failed.
    * It is undefined if the user is successfully authenticated.
@@ -33,7 +32,6 @@ export type AuthenticationResponse = {
  * including only the fields the application needs to use.
  */
 export type Character = {
-  __typename?: 'Character';
   gender: Scalars['String'];
   id: Scalars['ID'];
   image: Scalars['String'];
@@ -46,7 +44,6 @@ export type Character = {
 
 /** A wrapper to be used in paginated queries when fetching characters. */
 export type Characters = {
-  __typename?: 'Characters';
   info: PageInfo;
   results: Array<Character>;
 };
@@ -60,7 +57,6 @@ export type FilterCharacterInput = {
 };
 
 export type Mutation = {
-  __typename?: 'Mutation';
   authenticateUser: AuthenticationResponse;
   createUser: AuthenticationResponse;
   deleteRating: Rating;
@@ -101,13 +97,11 @@ export enum Order {
 
 /** Describes metadata regarding a page of results. */
 export type PageInfo = {
-  __typename?: 'PageInfo';
   count: Scalars['Int'];
   pages: Scalars['Int'];
 };
 
 export type Query = {
-  __typename?: 'Query';
   character?: Maybe<Character>;
   characters: Characters;
   /** Check if a user has rated a given character. */
@@ -164,7 +158,6 @@ export type QueryUsersArgs = {
  * It does not have its own ID, but rather a compund ID of userId and characterId, because it is a link table.
  */
 export type Rating = {
-  __typename?: 'Rating';
   characterId: Scalars['ID'];
   userId: Scalars['ID'];
   value: Scalars['Int'];
@@ -172,7 +165,6 @@ export type Rating = {
 
 /** A wrapper for data to be used when displaying the rating stats of a character. */
 export type RatingStats = {
-  __typename?: 'RatingStats';
   average: Scalars['Float'];
   count: Scalars['Int'];
 };
@@ -187,7 +179,6 @@ export enum RatingValue {
 }
 
 export type User = {
-  __typename?: 'User';
   createdAt: Scalars['String'];
   email: Scalars['String'];
   id: Scalars['ID'];
@@ -198,18 +189,17 @@ export type User = {
 
 /** A wrapper to be used in paginated queries when fetching users. */
 export type Users = {
-  __typename?: 'Users';
   info: PageInfo;
   results: Array<User>;
 };
 
-export type DefaultCharacterFragment = { __typename?: 'Character', id: string, name: string, status: string, species: string, type: string, gender: string, location: string, image: string } & { ' $fragmentName'?: 'DefaultCharacterFragment' };
+export type DefaultCharacterFragment = { id: string, name: string, status: string, species: string, type: string, gender: string, location: string, image: string } & { ' $fragmentName'?: 'DefaultCharacterFragment' };
 
-export type DefaultPageInfoFragment = { __typename?: 'PageInfo', count: number, pages: number } & { ' $fragmentName'?: 'DefaultPageInfoFragment' };
+export type DefaultPageInfoFragment = { count: number, pages: number } & { ' $fragmentName'?: 'DefaultPageInfoFragment' };
 
-export type DefaultRatingFragment = { __typename?: 'Rating', userId: string, characterId: string, value: number } & { ' $fragmentName'?: 'DefaultRatingFragment' };
+export type DefaultRatingFragment = { userId: string, characterId: string, value: number } & { ' $fragmentName'?: 'DefaultRatingFragment' };
 
-export type DefaultUserFragment = { __typename?: 'User', id: string, email: string, username: string, createdAt: string, ratings?: Array<{ __typename?: 'Rating', userId: string, characterId: string, value: number }> | null } & { ' $fragmentName'?: 'DefaultUserFragment' };
+export type DefaultUserFragment = { id: string, email: string, username: string, createdAt: string, ratings?: Array<{ userId: string, characterId: string, value: number }> | null } & { ' $fragmentName'?: 'DefaultUserFragment' };
 
 export type DeleteRatingMutationVariables = Exact<{
   characterId: Scalars['ID'];
@@ -217,10 +207,7 @@ export type DeleteRatingMutationVariables = Exact<{
 }>;
 
 
-export type DeleteRatingMutation = { __typename?: 'Mutation', deleteRating: (
-    { __typename?: 'Rating' }
-    & { ' $fragmentRefs'?: { 'DefaultRatingFragment': DefaultRatingFragment } }
-  ) };
+export type DeleteRatingMutation = { deleteRating: { ' $fragmentRefs'?: { 'DefaultRatingFragment': DefaultRatingFragment } } };
 
 export type RateCharacterMutationVariables = Exact<{
   userId: Scalars['ID'];
@@ -229,10 +216,7 @@ export type RateCharacterMutationVariables = Exact<{
 }>;
 
 
-export type RateCharacterMutation = { __typename?: 'Mutation', rateCharacter: (
-    { __typename?: 'Rating' }
-    & { ' $fragmentRefs'?: { 'DefaultRatingFragment': DefaultRatingFragment } }
-  ) };
+export type RateCharacterMutation = { rateCharacter: { ' $fragmentRefs'?: { 'DefaultRatingFragment': DefaultRatingFragment } } };
 
 export type AuthenticateUserMutationVariables = Exact<{
   identifier: Scalars['String'];
@@ -240,7 +224,7 @@ export type AuthenticateUserMutationVariables = Exact<{
 }>;
 
 
-export type AuthenticateUserMutation = { __typename?: 'Mutation', authenticateUser: { __typename?: 'AuthenticationResponse', token?: string | null, error?: string | null } };
+export type AuthenticateUserMutation = { authenticateUser: { token?: string | null, error?: string | null } };
 
 export type CreateUserMutationVariables = Exact<{
   username: Scalars['String'];
@@ -249,17 +233,14 @@ export type CreateUserMutationVariables = Exact<{
 }>;
 
 
-export type CreateUserMutation = { __typename?: 'Mutation', createUser: { __typename?: 'AuthenticationResponse', token?: string | null, error?: string | null } };
+export type CreateUserMutation = { createUser: { token?: string | null, error?: string | null } };
 
 export type GetCharacterByIdQueryVariables = Exact<{
   characterId: Scalars['ID'];
 }>;
 
 
-export type GetCharacterByIdQuery = { __typename?: 'Query', character?: (
-    { __typename?: 'Character' }
-    & { ' $fragmentRefs'?: { 'DefaultCharacterFragment': DefaultCharacterFragment } }
-  ) | null };
+export type GetCharacterByIdQuery = { character?: { ' $fragmentRefs'?: { 'DefaultCharacterFragment': DefaultCharacterFragment } } | null };
 
 export type GetCharactersQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']>;
@@ -267,13 +248,7 @@ export type GetCharactersQueryVariables = Exact<{
 }>;
 
 
-export type GetCharactersQuery = { __typename?: 'Query', characters: { __typename?: 'Characters', info: (
-      { __typename?: 'PageInfo' }
-      & { ' $fragmentRefs'?: { 'DefaultPageInfoFragment': DefaultPageInfoFragment } }
-    ), results: Array<(
-      { __typename?: 'Character' }
-      & { ' $fragmentRefs'?: { 'DefaultCharacterFragment': DefaultCharacterFragment } }
-    )> } };
+export type GetCharactersQuery = { characters: { info: { ' $fragmentRefs'?: { 'DefaultPageInfoFragment': DefaultPageInfoFragment } }, results: Array<{ ' $fragmentRefs'?: { 'DefaultCharacterFragment': DefaultCharacterFragment } }> } };
 
 export type GetRatingQueryVariables = Exact<{
   userId: Scalars['ID'];
@@ -281,17 +256,14 @@ export type GetRatingQueryVariables = Exact<{
 }>;
 
 
-export type GetRatingQuery = { __typename?: 'Query', rating?: (
-    { __typename?: 'Rating' }
-    & { ' $fragmentRefs'?: { 'DefaultRatingFragment': DefaultRatingFragment } }
-  ) | null };
+export type GetRatingQuery = { rating?: { ' $fragmentRefs'?: { 'DefaultRatingFragment': DefaultRatingFragment } } | null };
 
 export type GetRatingStatsByCharacterIdQueryVariables = Exact<{
   characterId: Scalars['ID'];
 }>;
 
 
-export type GetRatingStatsByCharacterIdQuery = { __typename?: 'Query', ratingStatsByCharacterId: { __typename?: 'RatingStats', average: number, count: number } };
+export type GetRatingStatsByCharacterIdQuery = { ratingStatsByCharacterId: { average: number, count: number } };
 
 export type HasRatedCharacterQueryVariables = Exact<{
   characterId: Scalars['ID'];
@@ -299,7 +271,7 @@ export type HasRatedCharacterQueryVariables = Exact<{
 }>;
 
 
-export type HasRatedCharacterQuery = { __typename?: 'Query', hasRatedCharacter: boolean };
+export type HasRatedCharacterQuery = { hasRatedCharacter: boolean };
 
 export type GetUsersQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']>;
@@ -307,13 +279,7 @@ export type GetUsersQueryVariables = Exact<{
 }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', users: { __typename?: 'Users', info: (
-      { __typename?: 'PageInfo' }
-      & { ' $fragmentRefs'?: { 'DefaultPageInfoFragment': DefaultPageInfoFragment } }
-    ), results: Array<(
-      { __typename?: 'User' }
-      & { ' $fragmentRefs'?: { 'DefaultUserFragment': DefaultUserFragment } }
-    )> } };
+export type GetUsersQuery = { users: { info: { ' $fragmentRefs'?: { 'DefaultPageInfoFragment': DefaultPageInfoFragment } }, results: Array<{ ' $fragmentRefs'?: { 'DefaultUserFragment': DefaultUserFragment } }> } };
 
 export const DefaultCharacterFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"DefaultCharacter"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Character"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"species"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"gender"}},{"kind":"Field","name":{"kind":"Name","value":"location"}},{"kind":"Field","name":{"kind":"Name","value":"image"}}]}}]} as unknown as DocumentNode<DefaultCharacterFragment, unknown>;
 export const DefaultPageInfoFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"DefaultPageInfo"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"PageInfo"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"pages"}}]}}]} as unknown as DocumentNode<DefaultPageInfoFragment, unknown>;

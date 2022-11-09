@@ -1,5 +1,6 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import useIsAuthenticated from '@/hooks/auth/useIsAuthenticated'
 
 const routes = [
   {
@@ -10,11 +11,17 @@ const routes = [
   {
     path: '/register',
     name: 'register',
+    meta: {
+      denyIfAuthenticated: true
+    },
     component: () => import('../views/RegisterView.vue')
   },
   {
     path: '/login',
     name: 'login',
+    meta: {
+      denyIfAuthenticated: true
+    },
     component: () => import('../views/LoginView.vue')
   },
   {
@@ -42,6 +49,15 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes
+})
+
+router.beforeEach(async (to, _from, next) => {
+  const denyIfAuthenticated = to.matched.some((record) => record.meta.denyIfAuthenticated)
+  const authenticated = useIsAuthenticated()
+
+  if (authenticated && denyIfAuthenticated) return next('/')
+
+  return next()
 })
 
 export default router
