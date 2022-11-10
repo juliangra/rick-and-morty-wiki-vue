@@ -26,7 +26,7 @@ const handleOnPaginationChange = (value: number) => {
   page.value = value
 }
 
-const { result, loading, error, refetch } = useQuery(GetUsersQuery, {
+const { result, loading, refetch } = useQuery(GetUsersQuery, {
   orderBy: orderBy.value,
   page: page.value
 })

@@ -1,7 +1,6 @@
-import useAuthentication from '@/hooks/auth/useAuthentication';
-import useIsAuthenticated from '@/hooks/auth/useIsAuthenticated';
-import { createRouter, createWebHashHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
+import useAuthentication from '@/hooks/auth/useAuthentication'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
 
 const routes = [
   {
@@ -26,14 +25,14 @@ const routes = [
     component: () => import('../views/LoginView.vue')
   },
   {
-    path: '/dashboard',
-    name: 'dashboard',
-    component: () => import('../views/DashboardView.vue')
-  },
-  {
     path: '/leaderboard',
     name: 'leaderboard',
     component: () => import('../views/LeaderboardView.vue')
+  },
+  {
+    path: '/characters',
+    name: 'characters',
+    component: () => import('../views/DashboardView.vue')
   },
   {
     path: '/characters/:id',
@@ -45,20 +44,11 @@ const routes = [
     name: 'not-found',
     component: () => import('../views/NotFoundView.vue')
   }
-];
+]
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
   routes
-});
-
-router.beforeEach(async (to, _from, next) => {
-  const denyIfAuthenticated = to.matched.some((record) => record.meta.denyIfAuthenticated)
-  const authenticated = useIsAuthenticated()
-
-  if (authenticated && denyIfAuthenticated) return next('/')
-
-  return next()
 })
 
 router.beforeEach(async (to, _from, next) => {

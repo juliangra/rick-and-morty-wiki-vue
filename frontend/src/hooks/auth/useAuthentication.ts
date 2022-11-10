@@ -15,8 +15,8 @@ const useAuthentication = () => {
     await useRedirect('/', { reload: true })
   }
 
-  const isAuthenticated = token.value !== null && useJwt(token.value)
-  const { payload: decoded } = useJwt(token.value)
+  const { header, payload: decoded } = useJwt(token.value)
+  const isAuthenticated = header.value !== null && token.value !== null && !!decoded.value
 
   return { token, isAuthenticated, signIn, signOut, decoded }
 }
