@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import LoadingOverlay from '@/components/common/LoadingOverlay.vue'
+
 import { AuthenticateUserMutation } from '@/graphql/mutations/users/AuthenticateUser'
-import useAuthentication from '@/hooks/auth/useAuthentication'
 import client from '@/lib/apollo'
 import { getSubmitFn, LoginFormSchema } from '@/schemas/forms'
 import type { LoginFormType } from '@/types/forms'
@@ -9,6 +9,7 @@ import { provideApolloClient, useMutation } from '@vue/apollo-composable'
 import { set } from '@vueuse/core'
 import { Field, Form } from 'vee-validate'
 import { computed, ref } from 'vue'
+import { useAuthStore } from '@/stores/authStore'
 
 provideApolloClient(client)
 
@@ -16,7 +17,7 @@ const isLoading = ref(false)
 const formError = ref<string | null>(null)
 const isError = computed(() => !!formError.value)
 
-const { signIn } = useAuthentication()
+const { signIn } = useAuthStore()
 
 const onSubmit = getSubmitFn(LoginFormSchema, async (values: LoginFormType) => {
   set(isLoading, true)

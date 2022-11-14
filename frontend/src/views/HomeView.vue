@@ -1,9 +1,10 @@
 <script lang="ts" setup>
-import useAuthentication from '@/hooks/auth/useAuthentication'
 import { User, ArrowRight, Search } from '@element-plus/icons-vue'
 import LinkButton from '@/components/common/LinkButton.vue'
+import { useAuthStore } from '@/stores/authStore'
+import { storeToRefs } from 'pinia'
 
-const { isAuthenticated } = useAuthentication()
+const { isAuthenticated } = storeToRefs(useAuthStore())
 </script>
 
 <template>
