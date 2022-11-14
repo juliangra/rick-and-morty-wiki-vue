@@ -13,8 +13,7 @@ defineProps({
   },
   icon: {
     type: Object as PropType<Component>,
-    required: false,
-    default: ''
+    required: false
   }
 })
 </script>

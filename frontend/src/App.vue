@@ -6,8 +6,8 @@ import LinkButton from '@/components/common/LinkButton.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { storeToRefs } from 'pinia'
 
-const isDark = useDark()
-const toggleDark = useToggle(isDark)
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
 
 const { signOut } = useAuthStore()
 const { isAuthenticated } = storeToRefs(useAuthStore())
