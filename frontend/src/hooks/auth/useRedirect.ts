@@ -1,7 +1,7 @@
 import router from '@/router'
 
 const useRedirect = async (destination: string, options = { reload: false }) => {
-  // TypeScript only accepts a number as an argument (here a NaN) and it works 🤔
+  // router.go() only accept a number as argument. Casting `destination` to a number works.
   if (options.reload) return router.go(Number(destination))
 
   await router.push(destination)

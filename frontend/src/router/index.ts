@@ -1,6 +1,7 @@
-import useAuthentication from '@/hooks/auth/useAuthentication'
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import { storeToRefs } from 'pinia'
+import { useAuthStore } from '@/stores/authStore'
 
 const routes = [
   {
@@ -53,9 +54,9 @@ const router = createRouter({
 
 router.beforeEach(async (to, _from, next) => {
   const denyIfAuthenticated = to.matched.some((record) => record.meta.denyIfAuthenticated)
-  const { isAuthenticated } = useAuthentication()
+  const { isAuthenticated } = storeToRefs(useAuthStore())
 
-  if (isAuthenticated && denyIfAuthenticated) return next('/')
+  if (isAuthenticated.value && denyIfAuthenticated) return next('/')
 
   return next()
 })

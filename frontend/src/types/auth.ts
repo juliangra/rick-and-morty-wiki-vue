@@ -3,3 +3,5 @@ export type DecodedToken = {
   id: string
   username: string
 }
+
+export type Severity = 'success' | 'warning' | 'error' | 'info'
