@@ -92,9 +92,3 @@ const handleDebounce = useDebounceFn(() => {
     </div>
   </div>
 </template>
-
-<style lang="scss">
-.el-card__body {
-  padding: 0 !important;
-}
-</style>
