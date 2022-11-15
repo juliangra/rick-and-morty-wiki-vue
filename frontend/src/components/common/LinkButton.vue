@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Component, PropType } from 'vue'
 
-defineProps({
+const { to } = defineProps({
   to: {
     type: String,
     required: true
@@ -14,6 +14,10 @@ defineProps({
   icon: {
     type: Object as PropType<Component>,
     required: false
+  },
+  reload: {
+    type: Boolean,
+    default: false
   }
 })
 </script>
