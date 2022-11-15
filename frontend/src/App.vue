@@ -23,7 +23,7 @@ const { isAuthenticated } = storeToRefs(useAuthStore())
     <LinkButton to="/register" :icon="User" type="success">Sign up </LinkButton>
   </div>
 
-  <main class="w-11/12 m-auto">
+  <main class="w-11/12 m-auto dark:text-gray-100 text-gray-900">
     <RouterView />
   </main>
 </template>

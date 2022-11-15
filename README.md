@@ -86,7 +86,7 @@ npm start
 Ensure you have a `.env` file located in the `backend/.env` directory with the following contents:
 
 ```sh
-PORT=8080
+PORT=9090
 DATABASE_URL="mysql://team-11:password@it2810-11.idi.ntnu.no:3306/project3"
 ```
 
