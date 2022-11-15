@@ -7,20 +7,13 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    2: typeof import('./src/components/PaginationBar 2.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
-    ElBadge: typeof import('element-plus/es')['ElBadge']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
-    ElConatiner: typeof import('element-plus/es')['ElConatiner']
-    ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDivider: typeof import('element-plus/es')['ElDivider']
-    ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
-    ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
-    ElLink: typeof import('element-plus/es')['ElLink']
     ElOption: typeof import('element-plus/es')['ElOption']
     ElPagination: typeof import('element-plus/es')['ElPagination']
     ElRow: typeof import('element-plus/es')['ElRow']
@@ -30,14 +23,10 @@ declare module '@vue/runtime-core' {
     ErrorOverlay: typeof import('./src/components/common/ErrorOverlay.vue')['default']
     HeadingText: typeof import('./src/components/typography/HeadingText.vue')['default']
     LinkButton: typeof import('./src/components/common/LinkButton.vue')['default']
-    Loading: typeof import('./src/components/common/Loading.vue')['default']
     LoadingOverlay: typeof import('./src/components/common/LoadingOverlay.vue')['default']
     OrderBySelect: typeof import('./src/components/forms/OrderBySelect.vue')['default']
     PaginationBar: typeof import('./src/components/PaginationBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-  }
-  export interface ComponentCustomProperties {
-    vLoading: typeof import('element-plus/es')['ElLoadingDirective']
   }
 }

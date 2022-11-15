@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "NODE_ENV=production rollup -c",
-    "start": "npm run build && npm run db:migrate && npm run db:seed && node .",
-    "dev": "npm run db:seed && rollup -c -w",
+    "start": "npm run build && npm run db:migrate && npm run db:seed && PORT=9090 node .",
+    "dev": "npm run db:seed && PORT=9090 rollup -c -w",
     "db:migrate": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:seed": "prisma db seed",

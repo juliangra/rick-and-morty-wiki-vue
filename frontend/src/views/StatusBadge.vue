@@ -10,7 +10,7 @@ const { color, icon: StatusIcon } = getIconFromStatus(status)
 
 <template>
   <div
-    class="rounded-full flex px-2 space-x-1 justify-center items-center absolute right-1 top-1"
+    class="rounded-full flex px-2 space-x-1 justify-center items-center absolute right-1 top-1 text-white"
     :class="badgeColor(color)"
   >
     <span>

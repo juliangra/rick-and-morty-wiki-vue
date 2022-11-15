@@ -18,6 +18,6 @@ fi
 sudo mkdir $destination
 
 echo "📂 Copying build to destination directory..."
-sudo rsync -a build/ $destination
+sudo rsync -a dist/ $destination
 
 echo "🚀 Deployed frontend! It is now live at http://it2810-11.idi.ntnu.no/project4"

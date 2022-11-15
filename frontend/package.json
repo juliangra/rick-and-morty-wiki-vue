@@ -1,10 +1,11 @@
 {
   "name": "frontend",
+  "homepage": "/project4",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
     "build": "run-p type-check build-only",
-    "build:prod": "NODE_ENV=\"production\" build",
+    "build:prod": "NODE_ENV=\"production\" npm run build",
     "start": "vite preview",
     "start:ci": "npx start-server-and-test start http://localhost:4173 test:e2e:ci",
     "test:unit": "vitest --environment jsdom --root src/",
@@ -18,7 +19,7 @@
     "test:e2e": "npm run test:e2e:setup & cypress open",
     "test:db:migrate": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project4_test\" npm run db:migrate:deploy",
     "test:db:seed": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project4_test\" npm run db:seed",
-    "test:backend": "cd ../backend && npm run build && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project4_test\" PORT=8080 node . &",
+    "test:backend": "cd ../backend && npm run build && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project4_test\" PORT=9090 node . &",
     "test:db:reset": "cd ../backend && DATABASE_URL=\"mysql://team-11:password@it2810-11.idi.ntnu.no/project4_test\" npm run db:reset",
     "test:e2e:ci": "npm run test:e2e:setup && npx cypress install && cypress run && npm run test:db:reset"
   },

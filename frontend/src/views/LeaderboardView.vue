@@ -7,9 +7,11 @@ import { Order } from '@/graphql/generated/graphql'
 import { GetUsersQuery } from '@/graphql/queries/users/GetUsers'
 import { useOrderByStore } from '@/stores/orderBy'
 import { useQuery } from '@vue/apollo-composable'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import moment from 'moment'
 import { storeToRefs } from 'pinia'
 import { computed, ref, watch } from 'vue'
+import HeadingText from '@/components/typography/HeadingText.vue'
 
 const sortOptions = Object.keys(Order).map((key) => ({
   label: key,
@@ -55,10 +57,12 @@ watch([orderBy, page], () => {
     page: page.value
   })
 })
+
+const { sm } = useBreakpoints(breakpointsTailwind)
 </script>
 
 <template>
-  <h1>Leaderboard</h1>
+  <HeadingText title="Leaderboard" />
 
   <LoadingOverlay v-if="loading" />
 
@@ -72,18 +76,21 @@ watch([orderBy, page], () => {
     />
   </el-select>
 
-  <el-table :data="tableData" style="width: 100%">
-    <el-table-column prop="username" label="Username" width="180" />
-    <el-table-column prop="email" label="E-mail" width="180" />
-    <el-table-column prop="createdAt" label="Created at" width="180" />
-    <el-table-column prop="ratings" label="Ratings" />
+  <el-table :data="tableData" class="w-full">
+    <el-table-column prop="username" label="Username" width="w-1/4" />
+    <el-table-column prop="email" label="E-mail" width="w-1/4" v-if="sm" />
+    <el-table-column prop="createdAt" label="Created at" width="w-1/4" v-if="sm" />
+    <el-table-column prop="ratings" label="Ratings" width="w-1/4" />
   </el-table>
 
-  <el-pagination
-    background
-    layout="prev, pager, next"
-    :page-count="pages"
-    :current-page="page"
-    @current-change="handleOnPaginationChange"
-  />
+  <div class="flex justify-center items-center">
+    <el-pagination
+      background
+      layout="prev, pager, next"
+      :page-count="pages"
+      :current-page="page"
+      @current-change="handleOnPaginationChange"
+      class="my-8"
+    />
+  </div>
 </template>
