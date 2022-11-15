@@ -7,16 +7,14 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    2: typeof import('./src/components/PaginationBar 2.vue')['default']
     DetailsText: typeof import('./src/components/typography/DetailsText.vue')['default']
     ElAlert: typeof import('element-plus/es')['ElAlert']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
-    ElConatiner: typeof import('element-plus/es')['ElConatiner']
-    ElContainer: typeof import('element-plus/es')['ElContainer']
     ElDialog: typeof import('element-plus/es')['ElDialog']
     ElDivider: typeof import('element-plus/es')['ElDivider']
+    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElImage: typeof import('element-plus/es')['ElImage']
@@ -30,6 +28,7 @@ declare module '@vue/runtime-core' {
     ElTable: typeof import('element-plus/es')['ElTable']
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ErrorOverlay: typeof import('./src/components/common/ErrorOverlay.vue')['default']
+    FilterDrawer: typeof import('./src/components/characters/FilterDrawer.vue')['default']
     HeadingText: typeof import('./src/components/typography/HeadingText.vue')['default']
     InfoSection: typeof import('./src/components/characters/InfoSection.vue')['default']
     LinkButton: typeof import('./src/components/common/LinkButton.vue')['default']
