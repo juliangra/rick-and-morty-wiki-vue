@@ -12,6 +12,7 @@ import LoadingOverlay from '@/components/common/LoadingOverlay.vue'
 import LinkButton from '@/components/common/LinkButton.vue'
 import type { FilterCharacterInput } from '@/graphql/generated/graphql'
 import FilterDrawer from '@/components/characters/FilterDrawer.vue'
+import ErrorOverlay from '@/components/common/ErrorOverlay.vue'
 
 const page = ref(1)
 const handleOnPaginationChange = (value: number) => {
@@ -91,6 +92,7 @@ const handleRemoveFilter = () => {
           class="m-2"
           size="large"
           placeholder="Input character name"
+          autofocus
           :prefix-icon="Search"
           @input="handleDebounce"
         />
@@ -104,6 +106,7 @@ const handleRemoveFilter = () => {
       @close="isDrawerOpen = false"
     />
     <LoadingOverlay transparent v-if="loading" />
+    <ErrorOverlay v-else-if="error" />
     <div v-else>
       <div v-if="characters?.length === 0" class="flex justify-center items-center gap-1 w-full">
         <el-icon><CircleCloseFilled /></el-icon>

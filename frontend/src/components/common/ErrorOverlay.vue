@@ -1,11 +1,33 @@
 <script lang="ts" setup>
-defineProps<{
-  message?: string
-}>()
-
-// TODO: Create and style error component
+defineProps({
+  title: {
+    type: String,
+    required: false
+  },
+  description: {
+    type: String,
+    required: false
+  },
+  overlay: {
+    type: Boolean,
+    required: false,
+    default: false
+  }
+})
 </script>
 
 <template>
-  <div class="flex justify-center items-center">julian lager error component</div>
+  <div class="w-full h-full mt-0 mr-auto" :class="{ hidden: !overlay }">
+    <el-alert
+      class="grid grid-cols-1 place-content-center gap-2"
+      :title="title ?? ''"
+      :description="
+        description ?? 'An unexpected error occurred! Ensure you are connected to the internet.'
+      "
+      type="error"
+      center
+      show-icon
+      effect="dark"
+    />
+  </div>
 </template>

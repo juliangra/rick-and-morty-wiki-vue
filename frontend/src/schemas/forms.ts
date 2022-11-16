@@ -1,4 +1,4 @@
-import * as y from 'yup';
+import * as y from 'yup'
 
 export const LoginFormSchema = y.object({
   identifier: y
@@ -39,4 +39,4 @@ export const FilterFormSchema = y.object({
   species: y.string().nullable(),
   gender: y.string().nullable(),
   status: y.string().nullable()
-});
+})
