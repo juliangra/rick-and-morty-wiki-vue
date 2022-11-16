@@ -1,14 +1,14 @@
-import { useStorage } from '@vueuse/core';
-import { useJwt } from '@vueuse/integrations/useJwt';
+import { useStorage } from '@vueuse/core'
+import { useJwt } from '@vueuse/integrations/useJwt'
 
 const useIsAuthenticated = () => {
-  const token = useStorage('token', null);
+  const token = useStorage('token', null)
 
-  if (!token.value) return false;
+  if (!token.value) return false
 
-  const { payload } = useJwt(token.value);
+  const { payload } = useJwt(token.value)
 
-  return payload;
-};
+  return payload
+}
 
-export default useIsAuthenticated;
+export default useIsAuthenticated

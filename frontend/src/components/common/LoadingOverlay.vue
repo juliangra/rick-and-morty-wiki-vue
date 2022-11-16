@@ -3,6 +3,7 @@ defineProps<{
   transparent?: boolean
 }>()
 </script>
+
 <template>
   <div
     class="absolute h-screen w-screen top-0 left-0 opacity-70 z-10 flex justify-center items-center"
