@@ -44,8 +44,6 @@ const onSubmit = getSubmitFn(LoginFormSchema, async (values: LoginFormType) => {
 })
 </script>
 <template>
-  <div>Login</div>
-
   <LoadingOverlay v-if="isLoading" />
   <el-row justify="center">
     <el-col :xs="18" :sm="10" :lg="8">

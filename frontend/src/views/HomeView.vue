@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { User, ArrowRight, Search } from '@element-plus/icons-vue'
+import { User, Search, Plus } from '@element-plus/icons-vue'
 import LinkButton from '@/components/common/LinkButton.vue'
 import { useAuthStore } from '@/stores/authStore'
 import { storeToRefs } from 'pinia'
@@ -24,8 +24,8 @@ const { isAuthenticated } = storeToRefs(useAuthStore())
         <el-divider content-position="center" class="bg-gray-900">or</el-divider>
 
         <div class="space-x-2">
-          <LinkButton to="/register" :icon="User" type="success">Sign Up</LinkButton>
-          <LinkButton to="/login" :icon="ArrowRight">Log in</LinkButton>
+          <LinkButton to="/register" :icon="Plus" type="success">Sign Up</LinkButton>
+          <LinkButton to="/login" :icon="User">Log in</LinkButton>
         </div>
       </div>
     </div>

@@ -78,14 +78,12 @@ const handleRemoveFilter = () => {
 
 <template>
   <div>
-    <div class="sm:flex items-center">
-      <el-button
-        type="primary"
-        class="ml-[9px] md:ml-[12px] !h-[38px] w-[96%] sm:w-auto"
-        @click="isDrawerOpen = true"
-      >
-        Filter Characters
-      </el-button>
+    <div class="sm:flex mt-2">
+      <div class="flex justify-center items-center w-full flex-1">
+        <el-button type="primary" class="mx-[8px] !h-[38px] w-full" @click="isDrawerOpen = true">
+          Filter Characters
+        </el-button>
+      </div>
       <div class="flex justify-center items-center w-full">
         <el-input
           v-model="filters.name"

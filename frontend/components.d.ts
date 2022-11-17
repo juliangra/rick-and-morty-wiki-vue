@@ -34,6 +34,7 @@ declare module '@vue/runtime-core' {
     ElTableColumn: typeof import('element-plus/es')['ElTableColumn']
     ErrorOverlay: typeof import('./src/components/common/ErrorOverlay.vue')['default']
     FilterDrawer: typeof import('./src/components/characters/FilterDrawer.vue')['default']
+    HamburgerIcon: typeof import('./src/components/icons/HamburgerIcon.vue')['default']
     HeadingText: typeof import('./src/components/typography/HeadingText.vue')['default']
     InfoSection: typeof import('./src/components/characters/InfoSection.vue')['default']
     LinkButton: typeof import('./src/components/common/LinkButton.vue')['default']
