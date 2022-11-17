@@ -1,24 +1,27 @@
 <script lang="ts" setup>
+import { storeToRefs } from 'pinia'
 import {
+  Menu,
   User,
   UserFilled,
-  ArrowRight,
+  Plus,
   Sunny,
   Moon,
-  ArrowDown,
   Search,
-  List
+  Histogram //for leaderboard
 } from '@element-plus/icons-vue'
 import { useDark, useToggle } from '@vueuse/core'
 import LinkButton from '@/components/common/LinkButton.vue'
 import { ref } from '@vue/reactivity'
 import { useAuthStore } from '@/stores/authStore'
-import { storeToRefs } from 'pinia'
+import HamburgerIcon from '@/components/icons/HamburgerIcon.vue'
+import { computed, watch } from 'vue'
 import useRedirect from '@/hooks/auth/useRedirect'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
-const value = ref(!useDark)
+
+const headerBackground = computed(() => (isDark.value ? 'bg-[#1d1e1f]' : 'bg-white'))
 
 const authStore = useAuthStore()
 const { isAuthenticated } = storeToRefs(authStore)
@@ -26,80 +29,73 @@ const { signOut } = authStore
 </script>
 
 <template>
-  <el-affix class="w-full bg-inherit">
-    <header class="z-[100] flex justify-between h-auto w-full p-5">
-      <div>
-        <router-link custom to="/" v-slot="{ navigate }">
-          <span @click="navigate" class="text-2xl text-blue-500 hover:cursor-pointer"
-            >Rick and Morty API</span
-          >
-        </router-link>
-      </div>
-      <div class="hidden md:flex">
-        <el-switch
-          v-model="value"
-          @click="toggleDark()"
-          :active-icon="Moon"
-          :inactive-icon="Sunny"
-        />
-
-        <div v-if="isAuthenticated" class="lg ml-5">
-          <el-button type="default" @click="signOut()" :icon="UserFilled">Sign out</el-button>
+  <el-affix class="w-full">
+    <header class="w-full p-5" :class="headerBackground">
+      <div class="justify-between flex md:visible">
+        <div class="flex">
+          <router-link custom to="/" v-slot="{ navigate }">
+            <span
+              role="button"
+              @click="navigate"
+              index="0"
+              class="w-full md:w-auto flex items-center text-xl text-blue-500 hover:text-[#3b83f6b1]"
+              >Rick and Morty API</span
+            >
+          </router-link>
         </div>
-        <div v-else class="lg ml-5">
-          <LinkButton to="/login" :icon="ArrowRight"> Log in </LinkButton>
-          <LinkButton to="/register" :icon="User" type="success">Sign up </LinkButton>
-        </div>
-      </div>
-      <div class="flex md:hidden">
-        <el-dropdown>
-          <el-button type="default">
-            Menu
-            <el-icon class="el-icon--right">
-              <ArrowDown />
-            </el-icon>
+        <div class="hidden md:flex">
+          <el-button class="!p-[10px]" @click="toggleDark()" :icon="isDark ? Moon : Sunny">
           </el-button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="toggleDark()">
-                <el-icon class="el-icon--left"> <Sunny v-if="isDark" /> <Moon v-else /> </el-icon>
-                <span v-if="isDark">Light </span><span v-else>Dark </span>
-                <span class="ml-1"> mode</span>
-              </el-dropdown-item>
-              <el-dropdown-item @click="useRedirect('/leaderboard')">
-                <el-icon class="el-icon--left">
-                  <List />
-                </el-icon>
-                Leaderboard</el-dropdown-item
-              >
-              <el-dropdown-item @click="useRedirect('/characters')">
-                <el-icon class="el-icon--left">
-                  <Search />
-                </el-icon>
-                Search</el-dropdown-item
-              >
-              <div v-if="!isAuthenticated">
-                <el-dropdown-item @click="useRedirect('/login')" divided>
-                  <el-icon class="el-icon--left">
-                    <ArrowRight />
-                  </el-icon>
-                  Sign in</el-dropdown-item
+          <div class="lg pl-5" index="2" v-if="!isAuthenticated">
+            <LinkButton to="/login" :icon="User"> Log in </LinkButton>
+            <LinkButton to="/register" :icon="Plus" type="success">Sign up </LinkButton>
+          </div>
+          <el-button v-else type="default" @click="signOut()" :icon="UserFilled"
+            >Sign out</el-button
+          >
+        </div>
+        <div class="flex md:hidden">
+          <el-dropdown class="md:collapse">
+            <span class="el-dropdown-link flex items-center" :icon="Menu">
+              <HamburgerIcon />
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item :icon="isDark ? Sunny : Moon" @click="toggleDark()">
+                  <span v-if="isDark">Light </span><span v-else>Dark </span
+                  ><span class="ml-1">mode</span>
+                </el-dropdown-item>
+
+                <el-dropdown-item divided :icon="Histogram" @click="useRedirect('/leaderboard')">
+                  <span role="button"> Leaderboard </span>
+                </el-dropdown-item>
+                <el-dropdown-item :icon="Search" @click="useRedirect('/characters')">
+                  <span role="button"> Search </span>
+                </el-dropdown-item>
+
+                <el-dropdown-item
+                  divided
+                  v-if="!isAuthenticated"
+                  :icon="User"
+                  @click="useRedirect('/login')"
                 >
-                <el-dropdown-item @click="useRedirect('/register')">
-                  <el-icon class="el-icon--left"> <UserFilled /> </el-icon>Sign up</el-dropdown-item
+                  <span role="button"> Log in </span>
+                </el-dropdown-item>
+                <el-dropdown-item
+                  v-if="!isAuthenticated"
+                  :icon="Plus"
+                  @click="useRedirect('/register')"
                 >
-              </div>
-              <div v-else>
-                <el-dropdown-item @click="signOut" divided>
-                  <el-icon class="el-icon--left">
-                    <UserFilled />
-                  </el-icon>
-                  Sign out</el-dropdown-item
+                  <span role="button">Sign up </span>
+                </el-dropdown-item>
+
+                <el-dropdown-item divided v-else @click="signOut()" :icon="UserFilled"
+                  >Sign out</el-dropdown-item
                 >
-              </div>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
       </div>
     </header>
   </el-affix>

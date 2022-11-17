@@ -42,7 +42,6 @@ const onSubmit = getSubmitFn(RegisterFormSchema, async (values) => {
 })
 </script>
 <template>
-  <div>Register</div>
 
   <LoadingOverlay v-if="isLoading" />
   <el-row justify="center">
