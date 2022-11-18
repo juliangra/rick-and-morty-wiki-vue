@@ -1,96 +1,56 @@
 <script lang="ts" setup>
 import LoadingOverlay from '@/components/common/LoadingOverlay.vue'
-import { DefaultPageInfoFragment } from '@/graphql/fragments/PageInfo'
-import { DefaultUserFragment } from '@/graphql/fragments/User'
-import { useFragment } from '@/graphql/generated/fragment-masking'
-import { Order } from '@/graphql/generated/graphql'
-import { GetUsersQuery } from '@/graphql/queries/users/GetUsers'
-import { useOrderByStore } from '@/stores/orderBy'
-import { useQuery } from '@vue/apollo-composable'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import moment from 'moment'
-import { storeToRefs } from 'pinia'
-import { computed, ref, watch } from 'vue'
+import { ref } from 'vue'
 import HeadingText from '@/components/typography/HeadingText.vue'
+import { useOrderByStore } from '@/stores/orderBy'
+import { ElSelect, ElOption, ElTable, ElTableColumn } from 'element-plus'
+import { storeToRefs } from 'pinia'
+import ErrorOverlay from '@/components/common/ErrorOverlay.vue'
+import useGetUsers from '@/hooks/useGetUsers'
+import { getSortOptions } from '@/utils/views/LeaderboardView'
 
-const sortOptions = Object.keys(Order).map((key) => ({
-  label: key,
-  value: Order[key as keyof typeof Order]
-}))
+const { sm } = useBreakpoints(breakpointsTailwind)
+
+const page = ref(1)
+const handleOnPaginationChange = (value: number) => {
+  page.value = value
+}
 
 const orderByStore = useOrderByStore()
 const { orderBy } = storeToRefs(orderByStore)
 const { toggleOrderBy } = orderByStore
 
-const page = ref(1)
-
-const handleOnPaginationChange = (value: number) => {
-  page.value = value
-}
-
-const { result, loading, refetch } = useQuery(GetUsersQuery, {
-  orderBy: orderBy.value,
-  page: page.value
-})
-
-const pageInfo = computed(() => useFragment(DefaultPageInfoFragment, result.value?.users.info))
-const pages = computed(() => pageInfo.value?.pages)
-
-watch(pages, () => {
-  console.log(pages.value)
-})
-
-const getTimeSince = (time: string) => moment(parseInt(time)).fromNow()
-
-const users = computed(() => useFragment(DefaultUserFragment, result.value?.users.results))
-const tableData = computed(() =>
-  users?.value?.map((user) => ({
-    ...user,
-    createdAt: getTimeSince(user.createdAt),
-    ratings: user.ratings?.length ?? 0
-  }))
-)
-
-watch([orderBy, page], () => {
-  refetch({
-    orderBy: orderBy.value,
-    page: page.value
-  })
-})
-
-const { sm } = useBreakpoints(breakpointsTailwind)
+const { tableData, pages, loading, error } = useGetUsers(page)
 </script>
 
 <template>
   <HeadingText title="Leaderboard" />
 
   <LoadingOverlay v-if="loading" />
+  <ErrorOverlay v-else-if="error" />
+  <div v-else>
+    <el-select v-model="orderBy" class="m-2" placeholder="Sort users" size="large">
+      <el-option
+        v-for="option in getSortOptions()"
+        :key="option.value"
+        :label="option.label"
+        :value="option.value"
+        @change="toggleOrderBy"
+      />
+    </el-select>
 
-  <el-select v-model="orderBy" class="m-2" placeholder="Sort users" size="large">
-    <el-option
-      v-for="option in sortOptions"
-      :key="option.value"
-      :label="option.label"
-      :value="option.value"
-      @change="toggleOrderBy"
-    />
-  </el-select>
+    <el-table :data="tableData" class="w-full">
+      <el-table-column prop="username" label="Username" width="w-1/4" />
+      <el-table-column prop="email" label="E-mail" width="w-1/4" v-if="sm" />
+      <el-table-column prop="createdAt" label="Created at" width="w-1/4" v-if="sm" />
+      <el-table-column prop="ratings" label="Ratings" width="w-1/4" />
+    </el-table>
 
-  <el-table :data="tableData" class="w-full">
-    <el-table-column prop="username" label="Username" width="w-1/4" />
-    <el-table-column prop="email" label="E-mail" width="w-1/4" v-if="sm" />
-    <el-table-column prop="createdAt" label="Created at" width="w-1/4" v-if="sm" />
-    <el-table-column prop="ratings" label="Ratings" width="w-1/4" />
-  </el-table>
-
-  <div class="flex justify-center items-center">
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :page-count="pages"
-      :current-page="page"
-      @current-change="handleOnPaginationChange"
-      class="my-8"
+    <PaginationBar
+      :pageCount="pages"
+      :currentPage="page"
+      :onPageChange="handleOnPaginationChange"
     />
   </div>
 </template>

@@ -7,23 +7,21 @@ import type { FilterCharacterInput } from '@/graphql/generated/graphql'
 
 defineProps<{
   open: boolean
+  filters: FilterCharacterInput
 }>()
 
-const filters = ref<FilterCharacterInput>({
-  name: '',
-  gender: '',
-  species: '',
-  status: '',
-  type: ''
-})
-
-defineEmits(['filter', 'removeFilter', 'close'])
+defineEmits<{
+  (event: 'filter', filter: FilterCharacterInput): void
+  (event: 'removeFilter'): void
+  (event: 'close'): void
+}>()
 </script>
 <template>
   <el-drawer
-    v-model="open"
+    :modelValue="open"
+    @update:modelValue="() => $emit('close')"
     @close="$emit('close')"
-    title="Filter Characters"
+    title="Filter characters"
     direction="ltr"
     size="sm:100%"
   >

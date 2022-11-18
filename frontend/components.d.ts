@@ -44,5 +44,6 @@ declare module '@vue/runtime-core' {
     PaginationBar: typeof import('./src/components/PaginationBar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    StatusBadge: typeof import('./src/components/characters/StatusBadge.vue')['default']
   }
 }

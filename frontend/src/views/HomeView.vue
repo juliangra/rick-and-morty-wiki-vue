@@ -8,13 +8,13 @@ const { isAuthenticated } = storeToRefs(useAuthStore())
 </script>
 
 <template>
-  <div class="flex flex-col justify-center items-center w-full h-screen">
+  <div class="flex flex-col justify-center items-center w-full h-[91vh]">
     <div class="flex flex-col justify-center items-center">
-      <h1 class="font-bold tracking-wide text-3xl">
+      <h1 class="font-bold tracking-wide text-3xl text-center">
         Welcome to the <span class="text-blue-600">Rick and Morty</span> wiki!
       </h1>
 
-      <span class="dark:text-gray-400 text-gray-800 my-4"
+      <span class="dark:text-gray-400 text-gray-800 my-4 text-center"
         >Browse, filter and rate your favourite Rick and Morty characters.</span
       >
 
@@ -25,7 +25,7 @@ const { isAuthenticated } = storeToRefs(useAuthStore())
 
         <div class="space-x-2">
           <LinkButton to="/register" :icon="Plus" type="success">Sign Up</LinkButton>
-          <LinkButton to="/login" :icon="User">Log in</LinkButton>
+          <LinkButton to="/login" :icon="User" type="primary">Log in</LinkButton>
         </div>
       </div>
     </div>

@@ -1,89 +1,43 @@
 <script setup lang="ts">
-import { DefaultCharacterFragment } from '@/graphql/fragments/Character'
-import { DefaultPageInfoFragment } from '@/graphql/fragments/PageInfo'
-import { useFragment } from '@/graphql/generated'
-import { GetCharactersQuery } from '@/graphql/queries/characters/GetCharacters'
-import { useQuery } from '@vue/apollo-composable'
-import { computed, ref, watch } from 'vue'
+import { ref } from 'vue'
 import { Search, CircleCloseFilled } from '@element-plus/icons-vue'
-import { useDebounceFn } from '@vueuse/shared'
-import StatusBadge from '@/views/StatusBadge.vue'
+import StatusBadge from '@/components/characters/StatusBadge.vue'
 import LoadingOverlay from '@/components/common/LoadingOverlay.vue'
 import LinkButton from '@/components/common/LinkButton.vue'
-import type { FilterCharacterInput } from '@/graphql/generated/graphql'
 import FilterDrawer from '@/components/characters/FilterDrawer.vue'
 import ErrorOverlay from '@/components/common/ErrorOverlay.vue'
+import { ElButton, ElInput, ElIcon, ElCard } from 'element-plus'
+import { RouterLink } from 'vue-router'
+import useGetCharacters from '@/hooks/characters/useGetCharacters'
 
 const page = ref(1)
 const handleOnPaginationChange = (value: number) => {
   page.value = value
 }
-
-const filters = ref<FilterCharacterInput>({
-  name: '',
-  gender: '',
-  species: '',
-  status: '',
-  type: ''
-})
-
-const { result, error, loading, refetch } = useQuery(GetCharactersQuery, {
-  page: page.value
-})
-
-const pageInfo = computed(() => useFragment(DefaultPageInfoFragment, result.value?.characters.info))
-const pages = computed(() => pageInfo.value?.pages ?? 1)
-
-const characters = computed(() =>
-  useFragment(DefaultCharacterFragment, result.value?.characters.results)
-)
-
 const isDrawerOpen = ref(false)
 
-watch(page, () => {
-  refetch({
-    page: page.value,
-    filter: filters.value
-  })
-})
-
-const handleDebounce = useDebounceFn(() => {
-  refetch({
-    page: page.value,
-    filter: filters.value
-  })
-  page.value = 1
-}, 500)
-
-// Refetch characters with applicable filters
-const handleSubmit = (f?: FilterCharacterInput) => {
-  filters.value = f ?? filters.value
-
-  refetch({
-    page: page.value,
-    filter: filters.value
-  })
-
-  isDrawerOpen.value = false
-}
-
-// Remove filters, keep name, and submit form
-const handleRemoveFilter = () => {
-  filters.value = {
-    name: filters.value.name
-  }
-  handleSubmit()
-}
+const {
+  characters,
+  pages,
+  filters,
+  loading,
+  error,
+  handleOnInputChange,
+  handleRemoveFilter,
+  handleSubmit
+} = useGetCharacters(page, isDrawerOpen)
 </script>
 
 <template>
   <div>
-    <div class="sm:flex mt-2">
-      <div class="flex justify-center items-center w-full flex-1">
-        <el-button type="primary" class="mx-[8px] !h-[38px] w-full" @click="isDrawerOpen = true">
-          Filter Characters
-        </el-button>
-      </div>
+    <div class="sm:flex items-center">
+      <el-button
+        type="primary"
+        class="ml-3 md:ml-2 !h-10 w-[95%] sm:w-auto"
+        @click="isDrawerOpen = true"
+      >
+        Filter characters
+      </el-button>
       <div class="flex justify-center items-center w-full">
         <el-input
           v-model="filters.name"
@@ -92,14 +46,15 @@ const handleRemoveFilter = () => {
           placeholder="Input character name"
           autofocus
           :prefix-icon="Search"
-          @input="handleDebounce"
+          @input="handleOnInputChange"
         />
       </div>
     </div>
 
     <FilterDrawer
       :open="isDrawerOpen"
-      @filter="(f) => handleSubmit(f)"
+      :filters="filters"
+      @filter="(filter) => handleSubmit(filter)"
       @removeFilter="handleRemoveFilter"
       @close="isDrawerOpen = false"
     />
@@ -112,7 +67,7 @@ const handleRemoveFilter = () => {
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         <div v-for="character in characters" :key="character.id">
-          <el-card class="m-2 relative scale-100 hover:scale-[101%]">
+          <el-card class="m-2 relative scale-100 hover:scale-[101%] transition duration-300">
             <router-link :to="`/characters/${character.id}`">
               <StatusBadge :status="character.status" />
               <img
@@ -126,7 +81,9 @@ const handleRemoveFilter = () => {
               <h1 class="text-2xl font-bold">{{ character.name }}</h1>
               <span>Species: {{ character.species }}</span>
               <div class="my-2 flex justify-between items-center">
-                <LinkButton :to="`/characters/${character.id}`">More information</LinkButton>
+                <LinkButton :to="`/characters/${character.id}`" type="primary"
+                  >More information</LinkButton
+                >
               </div>
             </div>
           </el-card>

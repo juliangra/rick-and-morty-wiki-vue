@@ -1,6 +1,6 @@
 import { RatingValue } from '@/graphql/generated/graphql'
 
-export const getAverageRatingInPercentage = (rating: number) => {
+export const getAverageRating = (rating: number) => {
   return Math.round(((rating || 0) * 100) / 5)
 }
 

@@ -8,20 +8,20 @@ import {
   Sunny,
   Moon,
   Search,
-  Histogram //for leaderboard
+  Histogram,
+  List
 } from '@element-plus/icons-vue'
 import { useDark, useToggle } from '@vueuse/core'
 import LinkButton from '@/components/common/LinkButton.vue'
-import { ref } from '@vue/reactivity'
 import { useAuthStore } from '@/stores/authStore'
 import HamburgerIcon from '@/components/icons/HamburgerIcon.vue'
-import { computed, watch } from 'vue'
+import { computed } from 'vue'
 import useRedirect from '@/hooks/auth/useRedirect'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 
-const headerBackground = computed(() => (isDark.value ? 'bg-[#1d1e1f]' : 'bg-white'))
+const headerBackground = computed(() => (isDark.value ? 'bg-black' : 'bg-gray-100'))
 
 const authStore = useAuthStore()
 const { isAuthenticated } = storeToRefs(authStore)
@@ -30,7 +30,7 @@ const { signOut } = authStore
 
 <template>
   <el-affix class="w-full">
-    <header class="w-full p-5" :class="headerBackground">
+    <header class="w-full p-5 shadow-lg" :class="headerBackground">
       <div class="justify-between flex md:visible">
         <div class="flex">
           <router-link custom to="/" v-slot="{ navigate }">
@@ -38,16 +38,17 @@ const { signOut } = authStore
               role="button"
               @click="navigate"
               index="0"
-              class="w-full md:w-auto flex items-center text-xl text-blue-500 hover:text-[#3b83f6b1]"
+              class="w-full md:w-auto flex items-center text-xl text-blue-500 hover:text-blue-600 transition duration-500"
               >Rick and Morty API</span
             >
           </router-link>
         </div>
         <div class="hidden md:flex">
-          <el-button class="!p-[10px]" @click="toggleDark()" :icon="isDark ? Moon : Sunny">
-          </el-button>
+          <el-button class="!p-3" @click="toggleDark()" :icon="isDark ? Moon : Sunny" />
+          <LinkButton to="/leaderboard" :icon="Histogram">Leaderboard</LinkButton>
+          <LinkButton to="/characters" :icon="Search">Dashboard</LinkButton>
           <div class="lg pl-5" index="2" v-if="!isAuthenticated">
-            <LinkButton to="/login" :icon="User"> Log in </LinkButton>
+            <LinkButton to="/login" :icon="User" type="primary"> Log in </LinkButton>
             <LinkButton to="/register" :icon="Plus" type="success">Sign up </LinkButton>
           </div>
           <el-button v-else type="default" @click="signOut()" :icon="UserFilled"
@@ -62,15 +63,15 @@ const { signOut } = authStore
             <template #dropdown>
               <el-dropdown-menu>
                 <el-dropdown-item :icon="isDark ? Sunny : Moon" @click="toggleDark()">
-                  <span v-if="isDark">Light </span><span v-else>Dark </span
+                  <span v-if="isDark">Light</span><span v-else>Dark</span
                   ><span class="ml-1">mode</span>
                 </el-dropdown-item>
 
                 <el-dropdown-item divided :icon="Histogram" @click="useRedirect('/leaderboard')">
-                  <span role="button"> Leaderboard </span>
+                  <span role="button">Leaderboard</span>
                 </el-dropdown-item>
                 <el-dropdown-item :icon="Search" @click="useRedirect('/characters')">
-                  <span role="button"> Search </span>
+                  <span role="button">Dashboard</span>
                 </el-dropdown-item>
 
                 <el-dropdown-item
@@ -79,14 +80,14 @@ const { signOut } = authStore
                   :icon="User"
                   @click="useRedirect('/login')"
                 >
-                  <span role="button"> Log in </span>
+                  <span role="button">Log in</span>
                 </el-dropdown-item>
                 <el-dropdown-item
                   v-if="!isAuthenticated"
                   :icon="Plus"
                   @click="useRedirect('/register')"
                 >
-                  <span role="button">Sign up </span>
+                  <span role="button">Sign up</span>
                 </el-dropdown-item>
 
                 <el-dropdown-item divided v-else @click="signOut()" :icon="UserFilled"
