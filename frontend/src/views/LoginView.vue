@@ -1,53 +1,23 @@
 <script lang="ts" setup>
 import LoadingOverlay from '@/components/common/LoadingOverlay.vue'
-
-import { AuthenticateUserMutation } from '@/graphql/mutations/users/AuthenticateUser'
 import client from '@/lib/apollo'
-import { getSubmitFn, LoginFormSchema } from '@/schemas/forms'
-import type { LoginFormType } from '@/types/forms'
-import { provideApolloClient, useMutation } from '@vue/apollo-composable'
-import { set } from '@vueuse/core'
+import { LoginFormSchema } from '@/schemas/forms'
+import { provideApolloClient } from '@vue/apollo-composable'
 import { Field, Form } from 'vee-validate'
-import { computed, ref } from 'vue'
-import { useAuthStore } from '@/stores/authStore'
+import useLoginForm from '@/hooks/forms/useLoginForm'
+import HeadingText from '@/components/typography/HeadingText.vue'
 
 provideApolloClient(client)
-
-const isLoading = ref(false)
-const formError = ref<string | null>(null)
-const isError = computed(() => !!formError.value)
-
-const { signIn } = useAuthStore()
-
-const onSubmit = getSubmitFn(LoginFormSchema, async (values: LoginFormType) => {
-  set(isLoading, true)
-  const { identifier, password } = values
-
-  const { mutate: authenticateUserMutation } = useMutation(AuthenticateUserMutation)
-
-  const res = await authenticateUserMutation({
-    identifier,
-    password
-  })
-
-  const { token, error: dbError } = res?.data?.authenticateUser || {}
-
-  set(isLoading, false)
-
-  if (dbError || !token) {
-    set(formError, dbError)
-    return
-  }
-
-  set(formError, null)
-  await signIn(token)
-})
+const { error, errorMessage, loading, onSubmit } = useLoginForm()
 </script>
+
 <template>
-  <LoadingOverlay v-if="isLoading" />
+  <HeadingText title="Welcome back!" />
+
+  <LoadingOverlay v-if="loading" />
   <el-row justify="center">
     <el-col :xs="18" :sm="10" :lg="8">
-      <el-alert v-show="isError" :title="formError" :closable="false" type="error" effect="dark" />
+      <el-alert v-show="error" :title="errorMessage" :closable="false" type="error" effect="dark" />
       <Form @submit="onSubmit" :validation-schema="LoginFormSchema" as="el-form">
         <Field name="identifier" v-slot="{ value, field, errorMessage }">
           <el-form-item :error="errorMessage" label="Email address / Username" required>
@@ -80,6 +50,6 @@ const onSubmit = getSubmitFn(LoginFormSchema, async (values: LoginFormType) => {
 
 <style lang="scss" scoped>
 .el-form-item {
-  @apply my-2;
+  @apply my-4;
 }
 </style>

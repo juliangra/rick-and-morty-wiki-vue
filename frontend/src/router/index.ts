@@ -41,8 +41,16 @@ const routes = [
     component: () => import('../views/characters/CharacterView.vue')
   },
   {
+    path: '/characters/:pathMatch(.*)*',
+    redirect: '/404'
+  },
+  {
     path: '/:pathMatch(.*)*',
-    name: 'not-found',
+    redirect: '/404'
+  },
+  {
+    path: '/404',
+    name: '404',
     component: () => import('../views/NotFoundView.vue')
   }
 ]
