@@ -6,7 +6,7 @@ defineProps<{
 </script>
 
 <template>
-  <p class="text-gray-200 my-1">
+  <p class="text-black dark:text-gray-200 my-1">
     {{ title }}: <span class="font-bold">{{ value }}</span>
   </p>
 </template>
