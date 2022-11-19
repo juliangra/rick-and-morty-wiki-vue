@@ -9,8 +9,10 @@ import { storeToRefs } from 'pinia'
 import ErrorOverlay from '@/components/common/ErrorOverlay.vue'
 import useGetUsers from '@/hooks/useGetUsers'
 import { getSortOptions } from '@/utils/views/LeaderboardView'
+import { User } from '@element-plus/icons-vue'
+import 'element-plus/theme-chalk/display.css'
 
-const { sm } = useBreakpoints(breakpointsTailwind)
+const { sm, md } = useBreakpoints(breakpointsTailwind)
 
 const page = ref(1)
 const handleOnPaginationChange = (value: number) => {
@@ -22,15 +24,25 @@ const { orderBy } = storeToRefs(orderByStore)
 const { toggleOrderBy } = orderByStore
 
 const { tableData, pages, loading, error } = useGetUsers(page)
+
+const notOne = (ratings: number) => {
+  return ratings != 1;
+}
+
 </script>
 
+
+
+<!--
+TODO: make 'CustomTableColumn.vue'(?)
+-->
 <template>
   <HeadingText title="Leaderboard" />
 
   <LoadingOverlay v-if="loading" />
   <ErrorOverlay v-else-if="error" />
   <div v-else>
-    <el-select v-model="orderBy" class="m-2" placeholder="Sort users" size="large">
+    <el-select v-model="orderBy" class="m-2 w-1/4" placeholder="Sort users" size="large">
       <el-option
         v-for="option in getSortOptions()"
         :key="option.value"
@@ -40,11 +52,36 @@ const { tableData, pages, loading, error } = useGetUsers(page)
       />
     </el-select>
 
-    <el-table :data="tableData" class="w-full">
-      <el-table-column prop="username" label="Username" width="w-1/4" />
-      <el-table-column prop="email" label="E-mail" width="w-1/4" v-if="sm" />
-      <el-table-column prop="createdAt" label="Created at" width="w-1/4" v-if="sm" />
-      <el-table-column prop="ratings" label="Ratings" width="w-1/4" />
+    <el-table :data="tableData" class="pt-5" width="100%">
+      <el-table-column aria-label="Username column" width="auto" min-width="180px">
+        <template #header >
+          <span class="flex">User</span>
+        </template>
+        <template #default="scope">
+          <div class="flex items-center">
+            <el-icon><User /></el-icon>
+            <span class="ml-5 mr-2 py-3 font-bold">{{ scope.row.username }}</span>
+            <span v-if="md">{{ scope.row.email }}</span>
+          </div>
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="createdAt" aria-label="'Created at'-column" width="auto" v-if="sm" class="md:pl-10">
+        <template #header >
+          <span class="flex">Created</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column aria-label="Ratings-column" width="auto">
+        <template #header >
+          <span class="flex">Ratings</span>
+        </template>
+        <template #default="scope">
+          <div class="flex items-center">
+            <el-tag class="font-bold" round>{{ scope.row.ratings }} RATING<span v-if="notOne(scope.row.ratings)">S</span></el-tag>
+          </div>
+        </template>
+      </el-table-column>
     </el-table>
 
     <PaginationBar

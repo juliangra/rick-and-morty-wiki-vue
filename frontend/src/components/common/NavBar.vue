@@ -43,14 +43,14 @@ const { signOut } = authStore
           </router-link>
         </div>
         <div class="hidden md:flex">
-          <el-button class="!p-3" @click="toggleDark()" :icon="isDark ? Moon : Sunny" />
-          <LinkButton to="/leaderboard" :icon="Histogram">Leaderboard</LinkButton>
+          <el-button circle @click="toggleDark()" :icon="isDark ? Sunny : Moon" />
+          <LinkButton to="/leaderboard" :icon="Histogram" plain>Leaderboard</LinkButton>
           <LinkButton to="/characters" :icon="Search">Dashboard</LinkButton>
           <div class="lg pl-5" index="2" v-if="!isAuthenticated">
             <LinkButton to="/login" :icon="User" type="primary"> Log in </LinkButton>
             <LinkButton to="/register" :icon="Plus" type="success">Sign up </LinkButton>
           </div>
-          <el-button v-else type="default" @click="signOut()" :icon="UserFilled"
+          <el-button v-else type="primary" @click="signOut()" :icon="UserFilled"
             >Sign out</el-button
           >
         </div>
