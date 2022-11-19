@@ -53,7 +53,9 @@ watch(
 </script>
 
 <template>
-  <LinkButton to="/characters" :icon="ArrowLeftBold">Back</LinkButton>
+  <div class="my-4">
+    <LinkButton to="/characters" :icon="ArrowLeftBold">Back</LinkButton>
+  </div>
   <LoadingOverlay v-if="loading" />
   <ErrorOverlay v-else-if="error" />
   <div v-else class="w-full flex justify-center items-center">
@@ -76,7 +78,7 @@ watch(
       </InfoSection>
       <InfoSection>
         <template #details>
-          <div class="mt-2 flex items-start justify-around">
+          <div class="mt-2 flex items-center justify-around">
             <div class="flex flex-col items-center">
               <p class="dark:text-gray-500 text-black font-bold text-xs uppercase mb-2">
                 Average rating
