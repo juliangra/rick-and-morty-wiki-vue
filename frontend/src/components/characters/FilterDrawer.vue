@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Form } from 'vee-validate'
 import { FILTER_GENDERS, FILTER_SPECIES, FILTER_STATUS } from '@/constants/filter'
 import { Filter, Delete } from '@element-plus/icons-vue'

@@ -8,8 +8,7 @@ import {
   Sunny,
   Moon,
   Search,
-  Histogram,
-  List
+  Histogram
 } from '@element-plus/icons-vue'
 import { useDark, useToggle } from '@vueuse/core'
 import LinkButton from '@/components/common/LinkButton.vue'

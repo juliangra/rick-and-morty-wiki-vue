@@ -9,6 +9,8 @@ import ErrorOverlay from '@/components/common/ErrorOverlay.vue'
 import { ElButton, ElInput, ElIcon, ElCard } from 'element-plus'
 import { RouterLink } from 'vue-router'
 import useGetCharacters from '@/hooks/characters/useGetCharacters'
+// Force import card styling
+import 'element-plus/es/components/card/style/css'
 
 const page = ref(1)
 const handleOnPaginationChange = (value: number) => {
@@ -59,7 +61,7 @@ const {
       @close="isDrawerOpen = false"
     />
     <LoadingOverlay transparent v-if="loading" />
-    <ErrorOverlay v-else-if="error" />
+    <ErrorOverlay overlay v-else-if="error" />
     <div v-else>
       <div v-if="characters?.length === 0" class="flex justify-center items-center gap-1 w-full">
         <el-icon><CircleCloseFilled /></el-icon>
@@ -67,7 +69,10 @@ const {
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
         <div v-for="character in characters" :key="character.id">
-          <el-card class="m-2 relative scale-100 hover:scale-[101%] transition duration-300">
+          <el-card
+            class="m-2 relative scale-100 hover:scale-[101%] transition duration-300"
+            :body-style="{ padding: 0 }"
+          >
             <router-link :to="`/characters/${character.id}`">
               <StatusBadge :status="character.status" />
               <img
