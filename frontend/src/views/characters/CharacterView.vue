@@ -78,16 +78,22 @@ watch(
         <template #details>
           <div class="mt-2 flex items-start justify-around">
             <div class="flex flex-col items-center">
-              <p class="text-gray-500 font-bold text-xs uppercase mb-2">Average rating</p>
+              <p class="dark:text-gray-500 text-black font-bold text-xs uppercase mb-2">
+                Average rating
+              </p>
               <el-progress type="circle" :width="70" :percentage="averageRating">
-                <span class="text-lg text-gray-200">{{
+                <span class="text-lg text-black dark:text-gray-200">{{
                   getReadableRating(ratingStats?.average || 0)
                 }}</span>
               </el-progress>
             </div>
             <div class="flex flex-col items-center">
-              <p class="text-gray-500 font-bold text-xs uppercase mb-2">Number of ratings</p>
-              <h2 class="font-bold text-2xl">{{ ratingStats?.count }}</h2>
+              <p class="dark:text-gray-500 text-black font-bold text-xs uppercase mb-2">
+                Number of ratings
+              </p>
+              <h2 class="font-bold text-2xl text-black dark:text-gray-200">
+                {{ ratingStats?.count }}
+              </h2>
             </div>
           </div>
         </template>
@@ -117,14 +123,14 @@ watch(
       </InfoSection>
     </el-card>
   </div>
-  <el-dialog v-model="currentRating" title="Rate character" class="min-w-[250px] max-w-[350px]">
+  <el-dialog v-model="isCurrentlyRating" title="Rate character" class="min-w-[250px] max-w-[350px]">
     <div class="flex justify-center">
       <el-rate v-model="currentRating" size="large" />
     </div>
     <template #footer>
       <span class="flex justify-center md:justify-end items-center">
         <el-button @click="isCurrentlyRating = false">Cancel</el-button>
-        <el-button type="primary" @click="handleRateCharacter"> Save rating </el-button>
+        <el-button type="primary" @click="handleRateCharacter">Save rating</el-button>
       </span>
     </template>
   </el-dialog>
