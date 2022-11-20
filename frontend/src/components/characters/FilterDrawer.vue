@@ -9,12 +9,16 @@ defineProps<{
   filters: FilterCharacterInput
 }>()
 
+/**
+ * For more information on emits, see: https://vuejs.org/guide/essentials/component-basics.html#listening-to-events
+ */
 defineEmits<{
   (event: 'filter', filter: FilterCharacterInput): void
   (event: 'removeFilter'): void
   (event: 'close'): void
 }>()
 </script>
+
 <template>
   <el-drawer
     :modelValue="open"

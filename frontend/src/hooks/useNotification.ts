@@ -1,6 +1,6 @@
 import type { Severity } from '@/types/auth'
 import { ElNotification } from 'element-plus'
-// Library bug; have to import the stylesheet manually
+// Library bug. We have to import the stylesheet manually.
 import 'element-plus/es/components/notification/style/css'
 
 type Notification = {

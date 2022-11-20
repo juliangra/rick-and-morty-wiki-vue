@@ -61,9 +61,13 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, _from, next) => {
+  /**
+   * Checks if the route requires an authenticated user.
+   */
   const denyIfAuthenticated = to.matched.some((record) => record.meta.denyIfAuthenticated)
   const { isAuthenticated } = storeToRefs(useAuthStore())
 
+  // If the route requires an authenticated user and the user is not authenticated, redirect to home view
   if (isAuthenticated.value && denyIfAuthenticated) return next('/')
 
   return next()

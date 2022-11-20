@@ -18,7 +18,6 @@ stages:
   - frontend-build
   - backend-build
   - frontend-test
-  # - frontend-e2e
 
 frontend:build:
   stage: frontend-build

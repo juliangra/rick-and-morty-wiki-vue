@@ -32,10 +32,10 @@ const {
 const {
   averageRating,
   currentRating,
+  loading: ratingLoading,
   error: ratingError,
   handleDeleteRating,
   handleRateCharacter,
-  loading: ratingLoading,
   rating,
   ratingStats
 } = useGetRating(characterId, userId, isCurrentlyRating)
@@ -43,7 +43,7 @@ const {
 const loading = characterLoading || ratingLoading
 const error = characterError || ratingError
 
-// When character ID changes, reload page to update information correctly
+// When character ID changes, the page is reloaded to update information correctly
 watch(
   () => route.params.id,
   () => {

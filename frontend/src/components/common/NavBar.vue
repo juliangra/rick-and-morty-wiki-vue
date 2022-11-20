@@ -15,8 +15,7 @@ import LinkButton from '@/components/common/LinkButton.vue'
 import { useAuthStore } from '@/stores/authStore'
 import HamburgerIcon from '@/components/icons/HamburgerIcon.vue'
 import { computed } from 'vue'
-import useRedirect from '@/hooks/auth/useRedirect'
-
+import useRedirect from '@/hooks/useRedirect'
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 
@@ -29,7 +28,7 @@ const { signOut } = authStore
 
 <template>
   <el-affix class="w-full">
-    <header class="w-full p-5 shadow-lg" :class="headerBackground">
+    <header class="w-screen p-5 shadow-lg" :class="headerBackground">
       <div class="justify-between flex md:visible">
         <div class="flex">
           <router-link custom to="/" v-slot="{ navigate }">

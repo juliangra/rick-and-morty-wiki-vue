@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 @layer utilities {
-    body {
-        @apply antialiased;
-    }
-    .el-notification.right {
-        @apply w-11/12 md:w-auto md:min-w-[330px];
-    }
+  body {
+    @apply antialiased;
+  }
+  .el-notification.right {
+    @apply w-11/12 md:w-auto md:min-w-[330px];
+  }
 }

@@ -1,13 +1,14 @@
 import { defineStore } from 'pinia'
 import { useStorage } from '@vueuse/core'
 import { useJwt } from '@vueuse/integrations/useJwt'
-import useRedirect from '@/hooks/auth/useRedirect'
+import useRedirect from '@/hooks/useRedirect'
 import useNotification from '@/hooks/useNotification'
 import type { Ref } from 'vue'
 import { ref, watch } from 'vue'
 
 /**
  * Validates a JWT token.
+ *
  * @param token is the JWT token to validate.
  * @returns a boolean indicating if the token is valid.
  */
@@ -19,7 +20,7 @@ export const validateToken = (token: Ref<string>) => {
 
 /**
  * Authentication store that tracks the state of authentication and
- * reacts to changes in localStorage JWT token
+ * reacts to changes to the JWT token in local storage.
  */
 export const useAuthStore = defineStore('authStore', () => {
   const token = useStorage<string>('token', null)
@@ -48,7 +49,7 @@ export const useAuthStore = defineStore('authStore', () => {
     })
   }
 
-  // When token changes in localStorage, revalidate authentications state
+  // When token changes in local storage, the authentication state is revalidated
   watch(token, () => {
     isAuthenticated.value = validateToken(token)
   })

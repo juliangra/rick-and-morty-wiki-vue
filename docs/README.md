@@ -1,131 +1,109 @@
 # Documentation
 
+## Important to note
+
+The focus from project 3 to project 4 was rewriting the frontend from React to Vue. Hence, this documentation focuses on the main differences between developing a frontend application in Vue versus React. **Because of this focus, it is assumed that the reader is familiar with the requirements from project 3, and we will therefore not focus on this. As an extension, there is far less focus on the backend codebase in this documentation, as this was was already thoroughly documented in project 3**.
+
+**Note that the only changes in the backend from project 3 to project 4 include changing the port it runs on and communicating with a new database, in order to not conflict with project 3**.
+
 ## Introduction
 
 The application is a full-stack web application with a frontend and backend, allowing a user to search and filter character from Rick and Morty. These characters can be rated by users, and the users can be sorted by their number of ratings.
 
 The characters are fetched from the [Rick and Morty GraphQL API](https://rickandmortyapi.com/graphql/), and are populated in our own MySQL database. For implementation details on how this is done, please see the scripts in the [`db` directory](/backend/db).
 
-The frontend is a single-page application built with React. The backend is a GraphQL server built with Express and [`express-graphql`](https://graphql.org/graphql-js/running-an-express-graphql-server/), and is connected to a MySQL database using [Prisma](https://www.prisma.io/).
+The frontend is a single-page application built with Vue. The backend is a GraphQL server built with Express and [`express-graphql`](https://graphql.org/graphql-js/running-an-express-graphql-server/), and is connected to a MySQL database using [Prisma](https://www.prisma.io/).
 
 ## Content and functionality
 
-### Search functionality
+### Requirements
 
-As a user, you can search for character by name. The search is case-insensitive, and will return all characters whose name contains the search term.
+The content and functionality in project 4 fulfills the same requirements defined in project 3:
 
-In `backend`, this is done in the `characters` query resolver (see [`backend/src/resolvers/query.ts`](/backend/src/resolvers/query.ts)). Filtering by name is part of the `options` that are passed to the `.findMany(...)` Prisma query.
+- **A user can search for a character by name**.
+- **A user gets paginated results of characters**.
+- **A user can get details about a given character**.
+- **A user can filter characters based on various attributes**.
+- **A user can sort users in ascending or descending order based on the number of ratings they have**.
+- **A user can rate a character**.
 
-In `frontend`, this is a simple text input field. In order to not send an unnecessary amount of requests to the backend, the value is [debounced using Mantine's implementation](https://mantine.dev/hooks/use-debounced-value/). For implementation details, see the [`useGetCharacters`](/frontend/src/hooks/characters/useGetCharacters.ts) hook.
-
-### Pagination
-
-The results for the characters in the dashboard and the users in the leaderboard are paginated.
-
-In `backend`, this is achieved using the `take` and `skip` options in the `.findMany(...)` Prisma query. For more information on how this works, see the [Prisma documentation](https://www.prisma.io/docs/concepts/components/prisma-client/pagination).
-
-In `frontend`, this is handled by a simple `useState` for the `page`. This integrates with Mantine's pre-built pagination component, which is used in the [`DashboardView`](/frontend/src/views/DashboardView.tsx) and [`LeaderboardView`](/frontend/src/views/LeaderboardView.tsx) views.
-
-Because we use Apollo GraphQL client, the already fetched data is cached. This ensures a great user experience when navigating between pages, as no data that has already been fetched must be fetched again. The Apollo client and cache is created in [`ApolloProvider`](/frontend/src/providers/ApolloProvider.tsx).
-
-### Details about each character
-
-When clicking **More information** about a character in the dashboard, the user is taken to a page with more information about the character. This page is identified by the character's ID. See the [`CharacterView`](/frontend/src/views/characters/CharacterView.tsx) view for more information about this view.
-
-### Filtering characters
-
-The characters can be filtered on various attributes.
-
-In `frontend`, the filter is set using Apollo state management's reactive variables. For details on how this is implemented, see the [`useGetCharacters`](/frontend/src/hooks/characters/useGetCharacters.ts) hook.
-
-In `backend`, this is done in the `characters` query resolver (see [`backend/src/resolvers/query.ts`](/backend/src/resolvers/query.ts)). The compund filtering is the `options` object that is passed to the `.findMany(...)` Prisma query. For more information on how this works, see the [Prisma documentation](https://www.prisma.io/docs/concepts/components/prisma-client/filtering-and-sorting).
-
-**It is important to note that** this filtering is applied to the entire dataset, and is then paginated and delivered to the client. In other words, the client simply displays the filtered data it receives from the server.
-
-### Sorting users
-
-The users can be sorted by their number of ratings, either in ascending or descending order.
-
-In `frontend`, the sorting is set using Apollo state management's reactive variables. For details on how this is implemented, see the [`useGetUsers`](/frontend/src/hooks/users/useGetUsers.ts) hook.
-
-**It is important to note that** this sorting is applied to the entire dataset, and is then paginated and delivered to the client. In other words, the client simply displays the sorted data it receives from the server.
-
-### Storing user ratings about characters
-
-When a user rates a character, the rating is stored in the database. The user can only rate a character once, and can update their rating at any time.
-
-This is presented when rating in character in the [`CharacterView`](/frontend/src/views/characters/CharacterView.tsx) view.
-
-### Universal design, web accessibility and sustainable development
-
-In order to keep this documentation clean and concise, we have moved the documentation for this topic to its own file. [**Click here to read more about universal design, web accessibility and sustainable development**](/docs/ACCESSIBILITY.md).
-
-### Application design
-
-The application design is simplistic and minimalistic. The application is built with Mantine, which is a React UI library that is designed to be accessible, responsive and easy to use. As an example, when filtering a character, the user selects a series of filter parameters in a [`FilterDrawer.tsx`](/frontend/src/components/filter/FilterDrawer.tsx). This is an easy to use and user-friendly component.
-
-When fetching characters, the list of characters are displayed in a simple and easy to understand list format. The user can learn more about each character by clicking a button with **More information** that stands out, making the UI easy to use.
-
-### Database and the virtual machine, with seeded data
-
-A MySQL database has been installed on the virtual machine (VM) hosted by NTNU, and connected using the Prisma ORM. We have consciously not added the database connection string to `.gitignore`, as this is a public repository. This is to make it easier for peer reviewers to test the application.
-
-The process of populating the database is split into three parts, and can all be executed using `npm run db:seed` in the `backend` directory. There should be no need for a peer reviewer to do this, but it is possible.
-
-First, we check if the characters from the Rick and Morty API are already in the database. If not, we fetch them. For implementation details, see [`db/download.ts`](/backend/db/download.ts). Then the characters are populated into the database. For implementation details, see [`db/populate.ts`](/backend/db/populate.ts). Finally, we seed the database with users and ratings. For implementation details, see [`db/seed.ts`](/backend/db/seed.ts).
-
-This ensures that the database is populated with the same data every time the application is seeded.
+The documentation does not go into further detail on these requirements, as they have been elaborated upon in project 3.
 
 ## Technology and tech stack
 
-### React
+### React versus Vue
 
-The user interface is implemented using React with TypeScript. For more information, see the [`frontend` documentation](/frontend/README.md). The application is initialized using `create-react-app`, and is implementated using TypeScript.
+Project 3 was implemented using React with TypeScript, initialized using `create-react-app`.
 
-#### Important to note: Validating a user's JWT token in the frontend
+In project 4, the frontend is implemented using Vue with TypeScript. For more information, see the [`frontend` documentation](/frontend/README.md). The application is initialized using `vite`, as this is the preferred build tool for Vue.
 
-In the second assignment, users could be authenticated directly towards GitLab's authentication server. In this assignment, however, we implemented our own username/password authentication using JSON Web Tokens.
+Note that the frontend is implemented using [Vue 3 and the composition API](https://vuejs.org/guide/extras/composition-api-faq.html), as opposed to [Vue using the options API](https://vuejs.org/guide/introduction.html#api-styles). This is because the composition API is the preferred way of writing Vue code, and is the future of Vue. The composition API is also used in the [official Vue documentation](https://vuejs.org/guide/quick-start.html#creating-a-vue-application).
 
-JWT tokens can be used to verify the validity of a user session by encoding user data with a secret variable on the server. This token can then be validated on the frontend using the same secret. **This ensures that the user session is valid and has not been tampered with**.
+#### `useState` versus `ref`
 
-Additionally, to comply with current security standards, the provided passwords are hashed using `bcrypt` with sufficient rounds of salting. This ensures that any breaches of the database would render the passwords virtually useless and non-decryptable.
+In Vue, the `ref` function is used to store state in a component. This function returns a reactive object, which can be used to store state. This object can be updated using the `value` property, and will trigger a re-render of the component. This is similar to the `useState` hook in React, which returns a state variable and a function to update the state variable.
 
-In this particular project, we had to use `create-react-app` to initialize the project. As of late 2020 [[1]], `create-react-app` officially started using Webpack 5 as the default Webpack version. This caused some breaking changes, as Webpack version 4 and up no longer includes core `node.js` modules, such as `stream`, `crypto` or `url`, all of which are used by both the `bcrypt` and `jsonwebtoken` libraries.
+For an example, see the [`DashboardView`](/frontend/src/views/DashboardView.vue) view.
 
-The solution for this problem is to add polyfills for the `node.js` core modules [[2]], which can be done by altering the `webpack.config.js` file. This file, however, is located inside the `node_modules` directory when using `create-react-app`, and the configurations would therefore be overwritten on every subsequent `npm install`.
+#### `useEffect` versus `watch`
 
-Therefore, we utilize `react-app-rewired`, which essentially allows the injection of custom Webpack configuration files, **before running the application with `react-scripts`**. This way, we are able to use the core `node.js` modules that are required by `bcrypt` and `jsonwebtoken`, **creating a secure, industry standard user authentication system**.
+In Vue, the `watch` function is used to watch for changes in a reactive object. This function takes a reactive object as its first argument, and a callback function as its second argument. The callback function is called whenever the reactive object is updated. This is similar to the `useEffect` hook in React, which takes a callback function as its first argument, and an array of dependencies as its second argument. The callback function is called whenever one of the dependencies is updated.
 
-[1]: https://github.com/facebook/create-react-app/issues/9994
-[2]: https://github.com/ecadlabs/taquito/issues/1281
+For an example, see the implementation logic in the [`useGetCharacters` hook](/frontend/src/hooks/characters//useGetCharacters.ts)].
 
-**In summary, the project is initialized using `create-react-app`, and the Webpack configuration is altered using `react-app-rewired` to allow the use of `bcrypt` and `jsonwebtoken`**.
+#### Emits in Vue
+
+In Vue, the `emit` function is used to emit events from a component. This function takes an event name as its first argument, and an optional payload as its second argument. The event name is used to listen for the event in the parent component.
+
+For an example, see the [`defineEmits` function in the `FilterDrawer`](/frontend/src/components/characters/FilterDrawer.vue) component.
+
+#### Markup, styles and scripts
+
+In Vue, markup, styles and scripts are defined in a single file component. This file is a `.vue` file, and contains the markup in the `<template>` tag, the styles in the `<style>` tag, and the scripts in the `<script>` tag. In React, markup, style and logic may be defined in one file or in separate files.
+
+Note that by using Tailwind, the styling is inlined in the markup, and is not defined in the `<style>` tag.
+
+#### Slots versus props
+
+In Vue, the `slot` element is used to define a placeholder for markup in a component. This markup can be defined in the parent component, and will be rendered in the slot. This is similar to the `children` prop in React, which is used to define the markup that should be rendered in a component.
+
+#### The group's summary of the differences
+
+The group's evaluation of the different developer experiences is as follows:
+
+React is a more well-known and utilised JavaScript library than Vue is. This means that when it comes to IDEs, plugins, language support and component libraries, React still has better coverage than Vue. The team behind Vue 3, however, has put a lot of effort into making the development experience as pleasant as possible. The group acknowledges that the structure of a Vue project, and the way components are created in Vue make more sense from a development point of view.
+
+There are some places where React excels, for example when it comes to the `useState` vs the `ref` hooks. It feels more logical to construct a hook like in React: `const [value, setValue] = useState()`, rather than Vue's approach `const value = ref()`. The state implemented inside the `ref` is not accessible by default, and one therefore has to access the value via `value.value`. This, however, is only the case when accessing the `value` attribute in the JavaScript section of the component; when accessing `value` inside the HTML, for some reason, the value of the variable is deconstructed by default, meaning `value` can be accessed simply via `{{ value }}` instead of `{{ value.value }}`. One can therefore say that Vue has it's quirks.
+
+Other than the aforementioned, the group is generally happy with both Vue and React, and would be comfortable developing future applications in any one of them.
 
 ### Local state management
 
-Local state management is handled by Apollo, specifically by the use of [Reactive variables](https://www.apollographql.com/docs/react/local-state/reactive-variables/). In particular, we use reactive variables for the following:
+In project 3, local state management was handled using Apollo, specifically by the use of [Reactive variables](https://www.apollographql.com/docs/react/local-state/reactive-variables/). This is React-specific functionality, which caused us to change the implementation in project 4.
 
-- Filtering characters. For implementation details, see the [`useGetCharacters`](/frontend/src/hooks/characters/useGetCharacters.ts) hook and [`state/dashboard.ts`](/frontend/src/state/dashboard.ts).
+In project 4, Vue's recommended local state management solution, [Pinia](https://pinia.esm.dev/), is used. Pinia defines stores for your local state that are used much like hooks in React. A store has both a state and behavior (variables and functions), which can be used to update the state. The state is reactive, and will trigger a re-render of the component that uses the store.
 
-- Sorting users. For implementation details, see the [`useGetUsers`](/frontend/src/hooks/users/useGetUsers.ts) hook and [`state/leaderboard.ts`](/frontend/src/state/leaderboard.ts).
+#### Pinia versus Apollo reactive variables
 
-Note that this is not to be confused with Apollo's [client-side cache](https://www.apollographql.com/docs/react/caching/cache-configuration/). The client-side cache is used to store data that has already been fetched from the server, and is used to ensure a great user experience when navigating between pages. The reactive variables are used to store data that is not fetched from the server, but is instead set by the user.
+The group's experience with local state management was that **Pinia offers more freedom regarding state management, whilst still providing a great API for their functionality**. By contrast, Apollo reactive variables acted more as a hybrid between `useState`, `useContext` and `useEffect`. This is because state was managed by the variable (like `useState`), and it could be passed around the DOM tree without prop drilling (like `useContext`), in addition to implicitly causing a `refetch` when the variable was updated (like `useEffect`).
 
-### GraphQL backend
+Furthermore, due to the freedom of Pinia, it is easier to integrate this with local storage, which is used to store the user session (see [`authStore.ts`](/frontend/src/stores/authStore.ts)).
 
-The backend is an Express web server with a GraphQL API. The resolvers interact with the database using Prisma.
+Because Pinia does not integrate as well with Apollo as Apollo reactive variables, defining `watch` methods that `refetch` data when some state changes (much like `useEffect`) was necessary. This added some complexity to the codebase, but the group believes that the benefits of Pinia outweigh the added complexity.
 
-To ensure type safety in out resolvers, we use [GraphQL Code Generator](https://the-guild.dev/graphql/codegen/plugins/typescript/typescript-resolvers). This generates TypeScript types for the GraphQL schema, and TypeScript resolvers for the GraphQL queries and mutations. These types are generated using `npm run gen:types` in the `backend` directory.
+### UI components and quality-of-life libraries
 
-For more information, see the [`backend` documentation](/backend/README.md).
+In project 3, [Mantine](https://mantine.dev/) was used for UI components. Additionally, Mantine comes with functionality for a color theme and useful hooks for form validation. Mantine is a great library for React, but unfortunately does not have a Vue version.
 
-### UI components
+Hence, [Element Plus](https://element-plus.org/) is used in project 4. Regarding visual appearance, Element Plus is quite similar to Mantine. However, Element Plus does not come with much of the "batteries included" functionality of Mantine.
 
-We have primarily used [Mantine](https://mantine.dev/) for our UI components. Additionally, Mantine comes with functionality for a color theme and useful hooks for form validation.
+#### Element Plus versus Mantine
 
-Mantine is set up in our [`StyleProvider.tsx`](/frontend/src/providers/StyleProvider.tsx) component, which is rendered in the [`App.tsx`](/frontend/src/App.tsx) component.
+Because Element Plus strictly is a UI component library, there is no support for popularly used hooks, forcing the developers to use other libraries for this. [VueUse](https://vueuse.org/) was used to get these hooks. Furthermore, there is no form validation in Element Plus. This is solved by using [VeeValidate](https://vee-validate.logaretm.com/v4/) with [Yup schema validation](https://github.com/jquense/yup) when validating forms.
 
-In order to clean up the code, we have created our own custom components, which are located in [`frontend/src/components`](/frontend/src/components). These components are used to wrap Mantine components, and to add additional functionality where needed. For an example, see [`FilterDrawer.tsx`](/frontend/src/components/filter/FilterDrawer.tsx).
+Furthermore, the group used [Tailwind CSS](https://tailwindcss.com/) for styling, as this offers a more concise way to style components than using CSS classes. This was done because Element had little to no support for styling related to positioning and layout, as opposed to what Mantine offered.
+
+In summary, the experience with Mantine was **far better**. Mantine offered a great API for form validation, and had a lot of useful hooks. Furthermore, Mantine had a lot of styling options for positioning and layout, which Element Plus did not have.
 
 ## Testing and documentation
 
@@ -133,16 +111,32 @@ In order to clean up the code, we have created our own custom components, which 
 
 The `frontend` has been tested using unit tests, snapshot tests, component tests and end-to-end (E2E) tests.
 
-For the unit tests, [Jest](https://jestjs.io/) was used. We test that the schema validation to be used in our forms is working as intended, in addition to the rating schema validation. See the tests in [`__tests__/schemas/forms.test.ts`](/frontend/src/__tests__/schemas/forms.test.ts) and [`__tests__/schemas/rating.test.ts`](/frontend/src/__tests__/schemas/rating.test.ts).
+For the unit tests, [Vitest](https://vitest.dev/) was used. We test that the schema validation to be used in our forms is working as intended.
 
-For the snapshot tests and component tests, [Jest](https://jestjs.io/) and [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) was used. These tests are located in [`frontend/src/__tests__`](/frontend/src/__tests__).
+For the snapshot tests and component tests, [Vitest](https://vitest.dev/) and [Vue Test Utils](https://v1.test-utils.vuejs.org/) was used. These tests are located in [`frontend/src/__tests__`](/frontend/src/__tests__).
 
 For the E2E tests, [Cypress](https://www.cypress.io/) was used. These tests are located in [`frontend/cypress`](/frontend/cypress). We have written some helper functions for the Cypress tests, which are located in [`frontend/cypress/support/commands`](/frontend/cypress/support/commands.ts).
 
 To enforce that these tests are _actually_ run, we have set up a GitLab continuous integration pipeline. For implementation details, see [`.gitlab-ci.yml`](/.gitlab-ci.yml).
+
+#### Vitest and Vue Test Utils versus Jest and React Testing Library
+
+The group's experience with Vitest was that it had a similar API to Jest, but was far better perfoming. However, Vitest with Vue Utils was much more difficult to work with than Jest with React Testing Library, as it is not as well documented and more errors occurred during test development.
+
+The group's experience with Cypress was very similar between React and Vue. Cypress is a great tool for E2E testing, and the group would highly recommend it to test user interaction across the application.
 
 ### Commenting code
 
 In addition to this documentation, we have written an overview of the [`frontend` documentation](/frontend/README.md) and the [`backend` documentation](/backend/README.md). This documentation is intended to be read by the peer reviewers, and offer a bird-eye view of each directory.
 
 Furthermore, both the `backend` and `frontend` have been extensively commented. This is to ensure that the code is easy to understand, and to make it easier for future developers to work on the project.
+
+## Git version control
+
+Throughout the project lifecycle, tasks have been created as issues in GitLab with short-lived feature branches that resolve these issues. Commits have, to a large degree, been marked with the issue number they contribute to resolve. Additionally, all branches are marked with the issue number they resolve.
+
+### Code etiquette and common conventions
+
+The code base has an opinionated directory structure, separating different code in `components`, `hooks`, `lib`, `utils`, etc... These directories are again nested to allow for simpler filenames, components and functions that make sense in the context they are in. Code is documented using JSDoc where the group deems it necessary.
+
+The project follows common conventions and linting rules defined by Vue. These rules are enforced by the linter, and are also checked by the GitLab CI pipeline. The linting rules are based on the ESLint configuration defined in [`frontend/.eslintrc.json`](/frontend/.eslintrc.json). This configuration, amongst other parts of the code base, is bootstrapped using [commandline tools recommended in Vue's documentation](https://vuejs.org/guide/quick-start.html#creating-a-vue-application).

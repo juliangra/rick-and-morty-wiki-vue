@@ -9,10 +9,17 @@ import { useQuery, useMutation } from '@vue/apollo-composable'
 import { computed, ref, watch, type Ref } from 'vue'
 import useNotification from '../useNotification'
 
+/**
+ * Wrapper hook for the GetRating query.
+ * @param characterId is the ID of the character to fetch the rating for.
+ * @param userId is the ID of the user to fetch the rating for.
+ * @param isCurrentlyRating is the state of the rating dialog.
+ * @returns all necessary objects and handlers for the query.
+ */
 const useGetRating = (characterId: string, userId: string, isCurrentlyRating: Ref<boolean>) => {
   const currentRating = ref(0)
 
-  // Get all ratings for current character
+  // Get rating stats for current character
   const {
     result: ratingStatsResult,
     loading: ratingStatsLoading,
@@ -24,7 +31,7 @@ const useGetRating = (characterId: string, userId: string, isCurrentlyRating: Re
   const ratingStats = computed(() => ratingStatsResult.value?.ratingStatsByCharacterId)
   const averageRating = computed(() => getAverageRating(ratingStats.value?.average || 0))
 
-  // Fetch your own previous rating by userId
+  // Get current rating for current user
   const {
     result: ratingResult,
     loading: ratingLoading,
@@ -36,6 +43,7 @@ const useGetRating = (characterId: string, userId: string, isCurrentlyRating: Re
   })
   const rating = computed(() => useFragment(DefaultRatingFragment, ratingResult.value?.rating))
 
+  // When the rating changes, update the current rating
   watch(
     () => ratingResult.value?.rating,
     () => {
@@ -48,7 +56,7 @@ const useGetRating = (characterId: string, userId: string, isCurrentlyRating: Re
   const { mutate: deleteRating } = useMutation(DeleteRatingMutation)
 
   /**
-   * Function that disables modal, validates rating and mutates data in database
+   * Rates the character. Displays a notification if the rating was successful.
    */
   const handleRateCharacter = async () => {
     isCurrentlyRating.value = false
@@ -67,7 +75,7 @@ const useGetRating = (characterId: string, userId: string, isCurrentlyRating: Re
   }
 
   /**
-   * Function that deletes rating from DB
+   * Deletes the rating. Displays a notification if the deletion was successful.
    */
   const handleDeleteRating = async () => {
     await deleteRating({
@@ -75,14 +83,15 @@ const useGetRating = (characterId: string, userId: string, isCurrentlyRating: Re
       userId
     })
 
-    // Reset your own rating to 0 upon deletion
     currentRating.value = 0
 
     useNotification({ type: 'success', title: 'Success', message: 'Successfully deleted rating' })
     await refetch()
   }
 
-  // Update general rating and own rating data upon deletion or
+  /**
+   * Refetches all queries related to ratings.
+   */
   const refetch = async () => {
     refetchRatingStats({
       characterId
@@ -93,7 +102,14 @@ const useGetRating = (characterId: string, userId: string, isCurrentlyRating: Re
     })
   }
 
+  /**
+   * Aggregated loading states of all queries related to a rating.
+   */
   const loading = computed(() => ratingStatsLoading.value || ratingLoading.value)
+
+  /**
+   * Aggregated error states of all queries to a rating.
+   */
   const error = computed(() => ratingStatsError.value || ratingError.value)
 
   return {

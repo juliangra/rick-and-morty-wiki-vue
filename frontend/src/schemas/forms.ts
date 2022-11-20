@@ -10,10 +10,14 @@ export const LoginFormSchema = y.object({
 
 type SubmitFunctionType = y.ObjectSchema<Record<string, any>>
 
-// Helper function that extends the input schema type and returns
-// appropriate types based on the schema
+/**
+ * Helper function that extends the input schema type.
+ * @param _schema is the schema to extend.
+ * @param callback is the callback function to run.
+ * @returns the callback function with the extended schema type.
+ */
 export const getSubmitFn = <Schema extends SubmitFunctionType>(
-  _: Schema,
+  _schema: Schema,
   callback: (values: y.InferType<Schema>) => void
 ) => {
   return (key: Record<string, any>) => {

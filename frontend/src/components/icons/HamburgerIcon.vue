@@ -1,6 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-  <!--  SVG from festherIcons.com -->
+  <!--  SVG from feathericons.com -->
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="24"

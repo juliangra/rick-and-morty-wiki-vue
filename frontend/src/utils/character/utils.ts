@@ -8,6 +8,12 @@ export const getReadableRating = (rating: number) => {
   return rating.toFixed(1)
 }
 
+/**
+ * Maps a numeric rating value to a an enum from GraphQL.
+ *
+ * @param value is the numeric rating value.
+ * @returns the enum value.
+ */
 export const getRatingValue = (value: number) => {
   switch (value) {
     case 1:

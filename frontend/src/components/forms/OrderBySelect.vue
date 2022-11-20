@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Order } from '@/graphql/generated/graphql'
-import { useOrderByStore } from '@/stores/orderBy'
+import { useOrderByStore } from '@/stores/orderByStore'
+import { getSortOptions } from '@/utils/views/LeaderboardView'
 import { ElSelect, ElOption } from 'element-plus'
 import { storeToRefs } from 'pinia'
 
@@ -8,10 +8,7 @@ const orderByStore = useOrderByStore()
 const { orderBy } = storeToRefs(orderByStore)
 const { toggleOrderBy } = useOrderByStore()
 
-const sortOptions = Object.keys(Order).map((key) => ({
-  label: key,
-  value: Order[key as keyof typeof Order]
-}))
+const sortOptions = getSortOptions()
 </script>
 
 <template>
