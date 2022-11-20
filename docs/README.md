@@ -109,11 +109,11 @@ In summary, the experience with Mantine was **far better**. Mantine offered a gr
 
 ### Types of testing
 
-The `frontend` has been tested using unit tests, snapshot tests, component tests and end-to-end (E2E) tests.
+The `frontend` has been tested using unit tests, snapshot tests, and end-to-end (E2E) tests.
 
 For the unit tests, [Vitest](https://vitest.dev/) was used. We test that the schema validation to be used in our forms is working as intended.
 
-For the snapshot tests and component tests, [Vitest](https://vitest.dev/) and [Vue Test Utils](https://v1.test-utils.vuejs.org/) was used. These tests are located in [`frontend/src/__tests__`](/frontend/src/__tests__).
+For the snapshot tests, [Vitest](https://vitest.dev/) and [Vue Test Utils](https://v1.test-utils.vuejs.org/) was used. These tests are located in [`frontend/src/__tests__`](/frontend/src/__tests__).
 
 For the E2E tests, [Cypress](https://www.cypress.io/) was used. These tests are located in [`frontend/cypress`](/frontend/cypress). We have written some helper functions for the Cypress tests, which are located in [`frontend/cypress/support/commands`](/frontend/cypress/support/commands.ts).
 

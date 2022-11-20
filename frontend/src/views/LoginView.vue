@@ -17,8 +17,8 @@ const { error, errorMessage, loading, onSubmit } = useLoginForm()
   <LoadingOverlay v-if="loading" />
   <el-row justify="center">
     <el-col :xs="18" :sm="10" :lg="8">
-      <el-alert v-show="error" :title="errorMessage" :closable="false" type="error" effect="dark" />
-      <Form @submit="onSubmit" :validation-schema="LoginFormSchema" as="el-form">
+      <el-alert v-show="error" :title="errorMessage" :closable="false" type="error" effect="dark" data-cy="alert"/>
+      <Form @submit="onSubmit" :validation-schema="LoginFormSchema" as="el-form" data-cy="login-form">
         <Field name="identifier" v-slot="{ value, field, errorMessage }">
           <el-form-item :error="errorMessage" label="Email address / Username" required>
             <el-input
@@ -26,6 +26,7 @@ const { error, errorMessage, loading, onSubmit } = useLoginForm()
               v-bind="field"
               :validate-event="false"
               :model-value="value"
+              data-cy="identifier-input"
             />
           </el-form-item>
         </Field>
@@ -38,6 +39,7 @@ const { error, errorMessage, loading, onSubmit } = useLoginForm()
               type="password"
               :validate-event="false"
               :model-value="value"
+              data-cy="password-input"
             />
           </el-form-item>
         </Field>

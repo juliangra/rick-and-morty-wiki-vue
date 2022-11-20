@@ -17,8 +17,8 @@ const { loading, error, errorMessage, onSubmit } = useRegisterForm()
   <LoadingOverlay v-if="loading" />
   <el-row justify="center">
     <el-col :xs="18" :sm="10" :lg="8">
-      <el-alert v-show="error" :title="errorMessage" :closable="false" type="error" />
-      <Form @submit="onSubmit" :validation-schema="RegisterFormSchema" as="el-form">
+      <el-alert v-show="error" :title="errorMessage" :closable="false" type="error" data-cy="alert" />
+      <Form @submit="onSubmit" :validation-schema="RegisterFormSchema" as="el-form" data-cy="register-form">
         <Field name="email" v-slot="{ value, field, errorMessage }">
           <el-form-item :error="errorMessage" label="Email" required>
             <el-input
@@ -26,6 +26,7 @@ const { loading, error, errorMessage, onSubmit } = useRegisterForm()
               v-bind="field"
               :validate-event="false"
               :model-value="value"
+              data-cy="email-input"
             />
           </el-form-item>
         </Field>
@@ -37,6 +38,7 @@ const { loading, error, errorMessage, onSubmit } = useRegisterForm()
               v-bind="field"
               :validate-event="false"
               :model-value="value"
+              data-cy="username-input"
             />
           </el-form-item>
         </Field>
@@ -49,6 +51,7 @@ const { loading, error, errorMessage, onSubmit } = useRegisterForm()
               type="password"
               :validate-event="false"
               :model-value="value"
+              data-cy="password-input"
             />
           </el-form-item>
         </Field>
@@ -61,6 +64,7 @@ const { loading, error, errorMessage, onSubmit } = useRegisterForm()
               type="password"
               :validate-event="false"
               :model-value="value"
+              data-cy="repeatPassword-input"
             />
           </el-form-item>
         </Field>

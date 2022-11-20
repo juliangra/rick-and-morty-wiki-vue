@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
@@ -22,5 +23,10 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  test: {
+    include: ['**/__tests__/**/*.{tsx,vue,ts}', '**/?(*.)+(spec|test).{tsx,vue,ts}'],
+    globals: true,
+    environment: 'jsdom'
   }
 })
