@@ -108,6 +108,7 @@ watch(
               plain
               class="w-full !py-5"
               :icon="Star"
+              data-cy="rating-slider"
               @click="isCurrentlyRating = true"
               >Rate</el-button
             >
@@ -117,6 +118,7 @@ watch(
               class="w-full !py-5"
               :icon="Delete"
               @click="handleDeleteRating"
+              data-cy="delete-rating-button"
               v-if="rating?.value"
               >Delete rating</el-button
             >

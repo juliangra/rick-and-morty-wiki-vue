@@ -31,10 +31,15 @@ const {
 </script>
 
 <template>
-  <div>
+  <div data-cy="characters-container">
     <div class="sm:flex items-center">
       <div class="mt-[8px] sm:mt-0 mx-[8px]">
-        <el-button type="primary" class="w-full !h-10 sm:w-auto" @click="isDrawerOpen = true">
+        <el-button
+          type="primary"
+          class="w-full !h-10 sm:w-auto"
+          @click="isDrawerOpen = true"
+          data-cy="filter-button"
+        >
           Filter characters
         </el-button>
       </div>
@@ -48,6 +53,7 @@ const {
           autofocus
           :prefix-icon="Search"
           @input="handleOnInputChange"
+          data-cy="search-bar"
         />
       </div>
     </div>
@@ -85,7 +91,7 @@ const {
               <h1 class="text-2xl font-bold">{{ character.name }}</h1>
               <span>Species: {{ character.species }}</span>
               <div class="my-2 flex justify-between items-center">
-                <LinkButton :to="`/characters/${character.id}`" type="primary"
+                <LinkButton :to="`/characters/${character.id}`" type="primary">
                   >More information</LinkButton
                 >
               </div>
