@@ -1,5 +1,9 @@
 # Backend documentation
 
+## Important to note
+
+In order to not affect the backend and database from project 3, the group has copied the backend folder from project 3 and created a new database for project 4. **The only changes in the backend from project 3 to project 4 include changing the port it runs on and communicating with a new database, in order to not conflict with project 3**.
+
 ## Introduction
 
 Below is an overview of the directories in the `backend` directory, and a general description of their contents.

@@ -3,6 +3,7 @@ defineProps<{
   title?: string
 }>()
 </script>
+
 <template>
   <div>
     <h2 class="font-bold text-blue-400 text-xl my-2">{{ title }}</h2>

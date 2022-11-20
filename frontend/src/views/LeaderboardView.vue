@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import LoadingOverlay from '@/components/common/LoadingOverlay.vue'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import HeadingText from '@/components/typography/HeadingText.vue'
-import { useOrderByStore } from '@/stores/orderBy'
+import { useOrderByStore } from '@/stores/orderByStore'
 import { ElSelect, ElOption, ElTable, ElTableColumn } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import ErrorOverlay from '@/components/common/ErrorOverlay.vue'
@@ -23,19 +23,15 @@ const orderByStore = useOrderByStore()
 const { orderBy } = storeToRefs(orderByStore)
 const { toggleOrderBy } = orderByStore
 
-const { tableData, pages, loading, error } = useGetUsers(page)
+const { tableData, pages, loading, error, handleRefetch } = useGetUsers(page)
 
 const notOne = (ratings: number) => {
-  return ratings != 1;
+  return ratings != 1
 }
 
+// Refetch data on each component mount to update number of ratings
+onMounted(() => handleRefetch())
 </script>
-
-
-
-<!--
-TODO: make 'CustomTableColumn.vue'(?)
--->
 <template>
   <HeadingText title="Leaderboard" />
 
@@ -54,7 +50,7 @@ TODO: make 'CustomTableColumn.vue'(?)
 
     <el-table :data="tableData" class="pt-5" width="100%">
       <el-table-column aria-label="Username column" width="auto" min-width="180px">
-        <template #header >
+        <template #header>
           <span class="flex">User</span>
         </template>
         <template #default="scope">
@@ -66,19 +62,27 @@ TODO: make 'CustomTableColumn.vue'(?)
         </template>
       </el-table-column>
 
-      <el-table-column prop="createdAt" aria-label="'Created at'-column" width="auto" v-if="sm" class="md:pl-10">
-        <template #header >
+      <el-table-column
+        prop="createdAt"
+        aria-label="'Created at'-column"
+        width="auto"
+        v-if="sm"
+        class="md:pl-10"
+      >
+        <template #header>
           <span class="flex">Created</span>
         </template>
       </el-table-column>
 
       <el-table-column aria-label="Ratings-column" width="auto">
-        <template #header >
+        <template #header>
           <span class="flex">Ratings</span>
         </template>
         <template #default="scope">
           <div class="flex items-center">
-            <el-tag class="font-bold" round>{{ scope.row.ratings }} RATING<span v-if="notOne(scope.row.ratings)">S</span></el-tag>
+            <el-tag class="font-bold" round
+              >{{ scope.row.ratings }} RATING<span v-if="notOne(scope.row.ratings)">S</span></el-tag
+            >
           </div>
         </template>
       </el-table-column>

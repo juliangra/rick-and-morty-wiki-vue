@@ -33,13 +33,12 @@ const {
 <template>
   <div>
     <div class="sm:flex items-center">
-      <el-button
-        type="primary"
-        class="ml-3 md:ml-2 !h-10 w-[95%] sm:w-auto"
-        @click="isDrawerOpen = true"
-      >
-        Filter characters
-      </el-button>
+      <div class="mt-[8px] sm:mt-0 mx-[8px]">
+        <el-button type="primary" class="w-full !h-10 sm:w-auto" @click="isDrawerOpen = true">
+          Filter characters
+        </el-button>
+      </div>
+
       <div class="flex justify-center items-center w-full">
         <el-input
           v-model="filters.name"

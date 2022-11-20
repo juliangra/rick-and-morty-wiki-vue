@@ -5,6 +5,11 @@ import { useMutation } from '@vue/apollo-composable'
 import { set } from '@vueuse/core'
 import { ref, computed } from 'vue'
 
+/**
+ * Wrapper hook for the CreateUser mutation.
+ *
+ * @returns all necessary objects and handlers for the mutation.
+ */
 const useRegisterForm = () => {
   const loading = ref(false)
   const errorMessage = ref<string | null>(null)
