@@ -30,7 +30,13 @@ defineEmits<{
   >
     <Form @submit="$emit('filter', filters)" as="el-form" class="flex justify-around flex-col">
       Species:
-      <el-select v-model="filters.species" class="m-2" placeholder="Species" size="large" data-cy="species-select">
+      <el-select
+        v-model="filters.species"
+        class="m-2"
+        placeholder="Species"
+        size="large"
+        data-cy="species-select"
+      >
         <el-option
           v-for="item in FILTER_SPECIES"
           :key="item.value"
@@ -41,7 +47,7 @@ defineEmits<{
       </el-select>
 
       Gender:
-      <el-select v-model="filters.gender" class="m-2" placeholder="Species" size="large">
+      <el-select v-model="filters.gender" class="m-2" placeholder="Gender" size="large">
         <el-option
           v-for="item in FILTER_GENDERS"
           :key="item.value"
@@ -54,7 +60,7 @@ defineEmits<{
       <el-select
         v-model="filters.status"
         class="m-2 flex justify-around"
-        placeholder="Species"
+        placeholder="Status"
         size="large"
       >
         <el-option
@@ -65,8 +71,14 @@ defineEmits<{
         />
       </el-select>
       <div class="flex mt-4">
-        <el-button class="w-1/2" native-type="submit" type="primary" :icon="Filter" data-cy="submit-button">
-          >Filter</el-button
+        <el-button
+          class="w-1/2"
+          native-type="submit"
+          type="primary"
+          :icon="Filter"
+          data-cy="submit-button"
+        >
+          Filter</el-button
         >
         <el-button class="w-1/2" type="danger" plain :icon="Delete" @click="$emit('removeFilter')"
           >Remove filters</el-button
