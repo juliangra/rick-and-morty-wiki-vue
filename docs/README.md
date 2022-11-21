@@ -20,12 +20,12 @@ The frontend is a single-page application built with Vue. The backend is a Graph
 
 The content and functionality in project 4 fulfills the same requirements defined in project 3:
 
-- **A user can search for a character by name**.
-- **A user gets paginated results of characters**.
-- **A user can get details about a given character**.
-- **A user can filter characters based on various attributes**.
-- **A user can sort users in ascending or descending order based on the number of ratings they have**.
-- **A user can rate a character**.
+- **A user can search for a character by name**. To see the functionality, inspect [`DashboardView`](/frontend/src/views/DashboardView.vue).
+- **A user gets paginated results of characters**. To see the functionality, inspect [`DashboardView`](/frontend/src/views/DashboardView.vue) or [`LeaderboardView`](/frontend/src/views/LeaderboardView.vue).
+- **A user can get details about a given character**. To see the functionality, inspect [`CharacterView`](/frontend/src/views/characters/CharacterView.vue).
+- **A user can filter characters based on various attributes**. To see the functionality, inspect [`DashboardView`](/frontend/src/views/DashboardView.vue).
+- **A user can sort users in ascending or descending order based on the number of ratings they have**. To see the functionality, inspect [`LeaderboardView`](/frontend/src/views/LeaderboardView.vue).
+- **A user can rate a character**. To see the functionality, inspect [`CharacterView`](/frontend/src/views/characters/CharacterView.vue).
 
 The documentation does not go into further detail on these requirements, as they have been elaborated upon in project 3.
 
@@ -37,7 +37,7 @@ Project 3 was implemented using React with TypeScript, initialized using `create
 
 In project 4, the frontend is implemented using Vue with TypeScript. For more information, see the [`frontend` documentation](/frontend/README.md). The application is initialized using `vite`, as this is the preferred build tool for Vue.
 
-Note that the frontend is implemented using [Vue 3 and the composition API](https://vuejs.org/guide/extras/composition-api-faq.html), as opposed to [Vue using the options API](https://vuejs.org/guide/introduction.html#api-styles). This is because the composition API is the preferred way of writing Vue code, and is the future of Vue. The composition API is also used in the [official Vue documentation](https://vuejs.org/guide/quick-start.html#creating-a-vue-application).
+Note that the frontend is implemented using [Vue 3 and the composition API](https://vuejs.org/guide/extras/composition-api-faq.html), as opposed to [Vue using the options API](https://vuejs.org/guide/introduction.html#api-styles). This is because the composition API is the preferred way of writing Vue code, and is the future of Vue. The composition API is also used in the [official Vue documentation](https://vuejs.org/guide/quick-start.html#creating-a-vue-application). In general, the composition API leans more to a procedural style of programming, as opposed to the options API, which leans more to an object-oriented style of programming.
 
 #### `useState` versus `ref`
 
@@ -49,7 +49,7 @@ For an example, see the [`DashboardView`](/frontend/src/views/DashboardView.vue)
 
 In Vue, the `watch` function is used to watch for changes in a reactive object. This function takes a reactive object as its first argument, and a callback function as its second argument. The callback function is called whenever the reactive object is updated. This is similar to the `useEffect` hook in React, which takes a callback function as its first argument, and an array of dependencies as its second argument. The callback function is called whenever one of the dependencies is updated.
 
-For an example, see the implementation logic in the [`useGetCharacters` hook](/frontend/src/hooks/characters//useGetCharacters.ts)].
+For an example, see the implementation logic in the [`useGetCharacters` hook](/frontend/src/hooks/characters//useGetCharacters.ts).
 
 #### Emits in Vue
 
@@ -59,9 +59,9 @@ For an example, see the [`defineEmits` function in the `FilterDrawer`](/frontend
 
 #### Markup, styles and scripts
 
-In Vue, markup, styles and scripts are defined in a single file component. This file is a `.vue` file, and contains the markup in the `<template>` tag, the styles in the `<style>` tag, and the scripts in the `<script>` tag. In React, markup, style and logic may be defined in one file or in separate files.
+In Vue, markup, styles and scripts are defined in a single file component. This file is a `.vue` file, and contains the markup in the `<template>` tag, the styles in the `<style>` tag, and the script logic in the `<script>` tag. In React, markup, style and logic may be defined in one file or in separate files.
 
-Note that by using Tailwind, the styling is inlined in the markup, and is not defined in the `<style>` tag.
+Note that by using Tailwind in this project, the styling is inlined in the markup, and is not defined in the `<style>` tag. This is the group's personal preference, as it puts markup and style closer together, and makes it easier to see how the markup is styled.
 
 #### Slots versus props
 
@@ -73,9 +73,9 @@ The group's evaluation of the different developer experiences is as follows:
 
 React is a more well-known and utilised JavaScript library than Vue is. This means that when it comes to IDEs, plugins, language support and component libraries, React still has better coverage than Vue. The team behind Vue 3, however, has put a lot of effort into making the development experience as pleasant as possible. The group acknowledges that the structure of a Vue project, and the way components are created in Vue make more sense from a development point of view.
 
-There are some places where React excels, for example when it comes to the `useState` vs the `ref` hooks. It feels more logical to construct a hook like in React: `const [value, setValue] = useState()`, rather than Vue's approach `const value = ref()`. The state implemented inside the `ref` is not accessible by default, and one therefore has to access the value via `value.value`. This, however, is only the case when accessing the `value` attribute in the JavaScript section of the component; when accessing `value` inside the HTML, for some reason, the value of the variable is deconstructed by default, meaning `value` can be accessed simply via `{{ value }}` instead of `{{ value.value }}`. One can therefore say that Vue has it's quirks.
+There are some places where React excels, for example when it comes to the `useState` vs the `ref` hooks. It feels more logical to construct a hook like in React: `const [value, setValue] = useState()`, rather than Vue's approach `const value = ref()`. The state implemented inside the `ref` is not accessible by default, and one therefore has to access the value via `value.value`. This, however, is only the case when accessing the `value` attribute in the `<script>` section of the component. When accessing `value` inside `<template>`, the value of the variable is deconstructed by default. This means that `value` can be accessed simply via `{{ value }}` instead of `{{ value.value }}`.
 
-Other than the aforementioned, the group is generally happy with both Vue and React, and would be comfortable developing future applications in any one of them.
+Other than the above-mentioned points, the group is generally happy with both Vue and React, and would be comfortable developing future applications in any one of them.
 
 ### Local state management
 
@@ -85,7 +85,7 @@ In project 4, Vue's recommended local state management solution, [Pinia](https:/
 
 #### Pinia versus Apollo reactive variables
 
-The group's experience with local state management was that **Pinia offers more freedom regarding state management, whilst still providing a great API for their functionality**. By contrast, Apollo reactive variables acted more as a hybrid between `useState`, `useContext` and `useEffect`. This is because state was managed by the variable (like `useState`), and it could be passed around the DOM tree without prop drilling (like `useContext`), in addition to implicitly causing a `refetch` when the variable was updated (like `useEffect`).
+The group's experience with local state management was that **Pinia offers more freedom regarding state management, whilst still providing a great API for their functionality**. By contrast, Apollo reactive variables acted more as a hybrid between `useState`, `useContext` and `useEffect`. This is because state was managed by the variable (like `useState`), and it could be passed around the DOM tree without prop drilling (like `useContext`), in addition to implicitly causing a `refetch` when the reactive variable was updated (like `useEffect`).
 
 Furthermore, due to the freedom of Pinia, it is easier to integrate this with local storage, which is used to store the user session (see [`authStore.ts`](/frontend/src/stores/authStore.ts)).
 
@@ -99,7 +99,7 @@ Hence, [Element Plus](https://element-plus.org/) is used in project 4. Regarding
 
 #### Element Plus versus Mantine
 
-Because Element Plus strictly is a UI component library, there is no support for popularly used hooks, forcing the developers to use other libraries for this. [VueUse](https://vueuse.org/) was used to get these hooks. Furthermore, there is no form validation in Element Plus. This is solved by using [VeeValidate](https://vee-validate.logaretm.com/v4/) with [Yup schema validation](https://github.com/jquense/yup) when validating forms.
+Because Element Plus strictly is a UI component library, there is no support for popularly used hooks, forcing the developers to use other libraries for this. [VueUse](https://vueuse.org/) was used to get these hooks, for instance [`useDark`](https://vueuse.org/core/usedark/) or [`useStorage`](https://vueuse.org/core/usestorage/). Furthermore, there is no form validation in Element Plus. This is solved by using [VeeValidate](https://vee-validate.logaretm.com/v4/) with [Yup schema validation](https://github.com/jquense/yup) when validating forms.
 
 Furthermore, the group used [Tailwind CSS](https://tailwindcss.com/) for styling, as this offers a more concise way to style components than using CSS classes. This was done because Element had little to no support for styling related to positioning and layout, as opposed to what Mantine offered.
 
@@ -121,9 +121,9 @@ To enforce that these tests are _actually_ run, we have set up a GitLab continuo
 
 #### Vitest and Vue Test Utils versus Jest and React Testing Library
 
-The group's experience with Vitest was that it had a similar API to Jest, but was far better perfoming. However, Vitest with Vue Utils was much more difficult to work with than Jest with React Testing Library, as it is not as well documented and more errors occurred during test development.
+The group's experience with Vitest was that it had a similar API to Jest, but was far better perfoming. However, Vitest with Vue Utils was much more difficult to work with than Jest with React Testing Library, as it is not as well documented and more errors occurred during test development. Hence, the group would recommend using Jest with React Testing Library over Vitest with Vue Test Utils.
 
-The group's experience with Cypress was very similar between React and Vue. Cypress is a great tool for E2E testing, and the group would highly recommend it to test user interaction across the application.
+The group's experience with Cypress was very similar between React and Vue. Cypress is a great tool for E2E testing, and the group would highly recommend it to test user interaction across the application regardless of which web-based frontend framework one uses.
 
 ### Commenting code
 
@@ -139,4 +139,4 @@ Throughout the project lifecycle, tasks have been created as issues in GitLab wi
 
 The code base has an opinionated directory structure, separating different code in `components`, `hooks`, `lib`, `utils`, etc... These directories are again nested to allow for simpler filenames, components and functions that make sense in the context they are in. Code is documented using JSDoc where the group deems it necessary.
 
-The project follows common conventions and linting rules defined by Vue. These rules are enforced by the linter, and are also checked by the GitLab CI pipeline. The linting rules are based on the ESLint configuration defined in [`frontend/.eslintrc.json`](/frontend/.eslintrc.json). This configuration, amongst other parts of the code base, is bootstrapped using [commandline tools recommended in Vue's documentation](https://vuejs.org/guide/quick-start.html#creating-a-vue-application).
+The project follows common conventions and linting rules defined by Vue. These rules are enforced by the linter, and are also checked by the GitLab CI pipeline. The linting rules are based on the ESLint configuration defined in [`frontend/.eslintrc.json`](/frontend/.eslintrc.json). This configuration, amongst other parts of the code base, is bootstrapped using [command-line tools recommended in Vue's documentation](https://vuejs.org/guide/quick-start.html#creating-a-vue-application).

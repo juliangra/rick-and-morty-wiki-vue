@@ -92,7 +92,7 @@ const {
               <span>Species: {{ character.species }}</span>
               <div class="my-2 flex justify-between items-center">
                 <LinkButton :to="`/characters/${character.id}`" type="primary">
-                  >More information</LinkButton
+                  More information</LinkButton
                 >
               </div>
             </div>

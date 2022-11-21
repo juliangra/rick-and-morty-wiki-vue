@@ -105,7 +105,7 @@ Please see [`backend/package.json`](/backend/package.json) for more information 
 
 ## Testing the application
 
-This part assumes that all dependencies are installed. The end-to-end tests assume that the frontend is running **in production mode** (`PORT=4173`), as it attempts to connect to it before running the end-to-end tests.
+This part assumes that all dependencies are installed. The end-to-end tests assume that the frontend is running **in production mode** (`PORT=5173`), as it attempts to connect to it before running the end-to-end tests.
 
 ### Testing `frontend`
 
