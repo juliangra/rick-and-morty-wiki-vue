@@ -1,4 +1,4 @@
-# Rick and Morty Wiki - IT2810
+# Rick and Morty Wiki - IT2810 (Vue)
 
 ## Description
 
