@@ -10,9 +10,9 @@ The focus from project 3 to project 4 was rewriting the frontend from React to V
 
 The application is a full-stack web application with a frontend and backend, allowing a user to search and filter character from Rick and Morty. These characters can be rated by users, and the users can be sorted by their number of ratings.
 
-The characters are fetched from the [Rick and Morty GraphQL API](https://rickandmortyapi.com/graphql/), and are populated in our own MySQL database. For implementation details on how this is done, please see the scripts in the [`db` directory](/backend/db).
+The characters are fetched from the [Rick and Morty GraphQL API](https://rickandmortyapi.com/graphql/), and are populated in our own PostgreSQL database. For implementation details on how this is done, please see the scripts in the [`db` directory](/backend/db).
 
-The frontend is a single-page application built with Vue. The backend is a GraphQL server built with Express and [`express-graphql`](https://graphql.org/graphql-js/running-an-express-graphql-server/), and is connected to a MySQL database using [Prisma](https://www.prisma.io/).
+The frontend is a single-page application built with Vue. The backend is a GraphQL server built with Express and [`express-graphql`](https://graphql.org/graphql-js/running-an-express-graphql-server/), and is connected to a PostgreSQL database using [Prisma](https://www.prisma.io/).
 
 ## Content and functionality
 
