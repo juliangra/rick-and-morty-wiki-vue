@@ -32,10 +32,6 @@ In order to not affect the backend and database from project 3, the group has co
 
 Hence, major changes between project 3 and project 4 is remaking the frontend using Vue.
 
-## Live demo
-
-Please use [this link](http://it2810-11.idi.ntnu.no/project4) to visit a live demo of the website.
-
 ## Developer Information
 
 Developed by Sebastian Sole, Julian Grande, Victoria Kallerud and Magnus Rødseth.
